@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ALECS TAKE ON CHESS</title>
+    <style>
+      #chess-board {
+        width: 480px;
+        height: 480px;
+        border: 1px solid black;
+      }
+      .chess-block {
+        float: left;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+      }
+      .piece{
+        width:60px; 
+        height:60px; 
+        position: absolute;
+        cursor: move
+      }
+      .piece.over{
+        border: 3px dotted #666
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div id="chess-board">
+      <img class ="piece" src="images/wp.png" draggable = 'true' num = 0 place = [0, 0]>
+      
+
+
+    </div>
+    <script src="board.js"></script>
+  </body>
+</html>
