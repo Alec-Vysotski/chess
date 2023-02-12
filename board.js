@@ -46,10 +46,13 @@ const placement = function(pos){
 
 
 const valid = function(piece){
-  if((parseInt(piece.offsetTop) < (distanceY + 449)&&(parseInt(piece.offsetLeft) < (449 + distanceX)))
+  if((parseInt(piece.offsetTop) < (distanceY + 480)&&(parseInt(piece.offsetLeft) < (480 + distanceX)))
   &&((parseInt(piece.offsetTop) >= (0 + distanceY) )&&( parseInt(piece.offsetLeft) >= (0+distanceX)))){
     return true
     //you can later use this to check if the move is valid by the rules
+    //use a while loop since this is a rule that applies to every piece
+    //go into where the piece is dropped. first do the placement function but also add what 
+    //square its going to in an element value or something. And then if the move isn't valid it put it back 
   }else{
     return false
   }
