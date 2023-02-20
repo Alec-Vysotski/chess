@@ -37,6 +37,7 @@ let figures = {
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "pawn")
       b.setAttribute('move', 0)
+      b.setAttribute('place', position)
       //b.setAttribute('id','pawn')
 
       b.style.left = leftArray[position] + 'px'
@@ -44,9 +45,25 @@ let figures = {
       board.appendChild(b)
       //to track the pieces just add left and top to an array 
     },
-    valid: function(wantedPosition, pieceLeft, pieceTop){
-      if (((parseInt(pieceLeft)) === (wantedPosition.offsetLeft))){
+    //take: function(){}, 
+    move: function(elmn, wanted){
+      if((elmn.place + 8)  == placement(wanted)){
+        return true
+      }else if((move == 1) && ((elmn.place + 16)  == placement(wanted))){
         return true 
+      }else{
+        return false
+      }
+    },
+    //replace the big if statement in the valid functio with just the move function 
+    valid: function(wantedPosition, pieceLeft, pieceTop, piece){
+      // if (((parseInt(pieceLeft)) === (wantedPosition.offsetLeft))||(take())){
+      //   return true 
+      // }
+      canIMove = figures.pawn.move(piece, wantedPosition)
+
+      if(canIMove){
+        return true
       }else{
         console.log(parseInt(pieceLeft))
         console.log(wantedPosition.offsetLeft);
@@ -131,11 +148,11 @@ function dragElement(elmnt) {
   function closeDragElement(e) {
 
 
-    if(valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] ,lefty, top)){
+    if(valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] ,lefty, top, elmnt)){
       let next = placement(elmnt)
       elmnt.style.left = leftArray[next] + 'px'
       elmnt.style.top = topArray[next] + 'px'
-      elmnt.place = nodeArray[next].id.split(',')
+      elmnt.place = nodeArray[next]
 
      
     }else{
@@ -160,4 +177,4 @@ function dragElement(elmnt) {
 
 
 
-//use $(x) to insert an element into 
+//for the check function use a for loop to just check all of the pieces takind moves and if the king is on those take squares 
