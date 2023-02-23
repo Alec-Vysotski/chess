@@ -39,10 +39,12 @@ let figures = {
       b.setAttribute('move', 0)
       b.setAttribute('place', position)
       //b.setAttribute('id','pawn')
+      //b.setAttribute('id','pawn')
 
       b.style.left = leftArray[position] + 'px'
       b.style.top = topArray[position] + 'px'
       board.appendChild(b)
+      //to track the pieces just add left and top to an array 
       //to track the pieces just add left and top to an array 
     },
     //take: function(){}, 
@@ -147,8 +149,7 @@ function dragElement(elmnt) {
 
   function closeDragElement(e) {
 
-
-    if(valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] ,lefty, top, elmnt)){
+  if(valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] ,lefty, top, elmnt)){
       let next = placement(elmnt)
       elmnt.style.left = leftArray[next] + 'px'
       elmnt.style.top = topArray[next] + 'px'
@@ -167,6 +168,9 @@ function dragElement(elmnt) {
     
   }
 }
+
+
+
 
 
 
