@@ -1,8 +1,7 @@
 const board = document.getElementById("chess-board");
 const parentRect = board.getBoundingClientRect() 
 let nodeArray = [] 
-let leftArray = []
-let topArray = []
+
 
 let distanceX = parentRect.x
 let distanceY = parentRect.y 
@@ -24,10 +23,7 @@ for (let i = 0; i < 8; i++) {
   }
 }
 
-for(let k = 0; k < nodeArray.length; k++){
-  leftArray.push(nodeArray[k].offsetLeft)
-  topArray.push(nodeArray[k].offsetTop)
-}
+//_______________________________________Initialization complete________________________________
 
 let figures = {
   pawn:{
@@ -39,53 +35,55 @@ let figures = {
       b.setAttribute('move', 0)
       b.setAttribute('place', position)
       //b.setAttribute('id','pawn')
-      //b.setAttribute('id','pawn')
 
-      b.style.left = leftArray[position] + 'px'
-      b.style.top = topArray[position] + 'px'
+
+      b.style.left = nodeArray[position].offsetLeft + 'px'
+      b.style.top = nodeArray[position].offsetTop + 'px'
       board.appendChild(b)
-      //to track the pieces just add left and top to an array 
-      //to track the pieces just add left and top to an array 
+
+   
     },
-    //take: function(){}, 
-    move: function(elmn, wanted){
-      if((elmn.place + 8)  == placement(wanted)){
+    take: function(){}, 
+    move: function(element, Placedwanted){
+      //make sure you run the placement function in the argument 
+      console.log(element);
+      //element is undefined
+      let currentposition = element.getAttribute("place")
+      currentposition =   Number(currentposition)
+      if((currentposition + 8)  == Placedwanted){
         return true
-      }else if((move == 1) && ((elmn.place + 16)  == placement(wanted))){
+      }else if(parseInt(element.getAttribute("move") == 1) && ((currentposition + 16)  == Placedwanted)){
         return true 
       }else{
         return false
       }
     },
     //replace the big if statement in the valid functio with just the move function 
-    valid: function(wantedPosition, pieceLeft, pieceTop, piece){
-      // if (((parseInt(pieceLeft)) === (wantedPosition.offsetLeft))||(take())){
-      //   return true 
-      // }
-      canIMove = figures.pawn.move(piece, wantedPosition)
+    valid: function(wantedPosition, piece){
 
-      if(canIMove){
-        return true
-      }else{
-        console.log(parseInt(pieceLeft))
-        console.log(wantedPosition.offsetLeft);
-        return false
-      }
+
+      if(figures.pawn.move((piece), placement(wantedPosition))){
+          return true
+        }else{
+          console.log('not available');
+          console.log(typeof piece.getAttribute("place"))
+          console.log(typeof placement(wantedPosition));
+          return false
+        }
 
     }
   }
 }
 
-let test = figures.pawn.create(8)
-// console.log(test);
-// console.log(test.getAttribute("pieceinfo"))
+let test = figures.pawn.create(0)
+
 
 function placement(pos){
   let closest = null 
   let minDist = Infinity
   for(let p = 0; p < nodeArray.length; p++){
-    const distX = Math.abs(pos.offsetLeft - leftArray[p]);
-    const distY = Math.abs(pos.offsetTop - topArray[p]);
+    const distX = Math.abs(pos.offsetLeft - nodeArray[p].offsetLeft);
+    const distY = Math.abs(pos.offsetTop - nodeArray[p].offsetTop);
     const dist = Math.sqrt(distX * distX + distY * distY);
     if (dist < minDist) {
       minDist = dist;
@@ -119,8 +117,7 @@ dragElement(document.querySelector('.piece'))
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     elmnt.onmousedown = dragMouseDown;
-    let top = elmnt.style.top 
-    let lefty = elmnt.style.left
+
          
 
   function dragMouseDown(e) {
@@ -148,37 +145,68 @@ function dragElement(elmnt) {
     }
 
   function closeDragElement(e) {
-
-  if(valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] ,lefty, top, elmnt)){
+  let pieceplacement = elmnt.getAttribute("place")
+  if(valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] , elmnt)){
       let next = placement(elmnt)
-      elmnt.style.left = leftArray[next] + 'px'
-      elmnt.style.top = topArray[next] + 'px'
-      elmnt.place = nodeArray[next]
+      elmnt.style.left = nodeArray[next].offsetLeft + 'px'
+      elmnt.style.top = nodeArray[next].offsetTop + 'px'
+      elmnt.setAttribute("place", placement(elmnt))
 
+      //the problem might be that the second argument need to be a string 
+
+
+      //console.log(`changed place to ${next}`);
+      //elmnt.setAttribute("move", ()) 
      
     }else{
-      elmnt.style.top = top 
-      elmnt.style.left = lefty
+      elmnt.style.top = nodeArray[pieceplacement].offsetTop + 'px'
+      elmnt.style.left = nodeArray[pieceplacement].offsetLeft + 'px'
+      console.log();
     }
     
     document.onmouseup = null;
     document.onmousemove = null;
-    top = elmnt.style.top 
-    lefty = elmnt.style.left
+   
     
   }
 }
 
 
+//_________________________________window logic___________________________________________
 
 
+const windowRef = window; 
+let pagewidth = windowRef.innerWidth; 
 
 
+windowRef.addEventListener('resize', function() {
+  if (windowRef.innerWidth !== pagewidth) {
+    console.log('Page width has changed!');
+    everything = document.querySelectorAll(".piece")
+    
+    for(let o = 0; o < everything.length; o++){
+      suposedtobe = everything[o].getAttribute("place")
+      console.log(nodeArray[suposedtobe].offsetLeft);
+      everything[o].style.left = nodeArray[suposedtobe].offsetLeft + 'px'
+      everything[o].style.top = nodeArray[suposedtobe].offsetTop + 'px'
+      // top = everything[o].style.top 
+      // lefty = everything[o].style.left
+      //get place attribute and than use lefty and top array to place it back to its place 
+    }
+    pagewidth = windowRef.innerWidth;
+  }
+});
 
 
+//NOTES FOR THE FUTURE 
+
+//my two problems are:
+//1. lastx and lasty don't work when resizing --- solved
+//2. the attribute place does not change  -- working on it 
+//3. don't know how to change the move attribute -- working on it
 
 
-
-
+//Future: 
 
 //for the check function use a for loop to just check all of the pieces takind moves and if the king is on those take squares 
+
