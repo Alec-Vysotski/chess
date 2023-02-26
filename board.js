@@ -45,16 +45,15 @@ let figures = {
     },
     take: function(){}, 
     move: function(element, Placedwanted){
-      //make sure you run the placement function in the argument 
-      console.log(element);
-      //element is undefined
+      //make sure you run the placement function for the placedwanted argument 
       let currentposition = element.getAttribute("place")
       currentposition =   Number(currentposition)
       if((currentposition + 8)  == Placedwanted){
         return true
-      }else if(parseInt(element.getAttribute("move") == 1) && ((currentposition + 16)  == Placedwanted)){
+      }else if((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)){
         return true 
       }else{
+        console.log();
         return false
       }
     },
@@ -65,9 +64,6 @@ let figures = {
       if(figures.pawn.move((piece), placement(wantedPosition))){
           return true
         }else{
-          console.log('not available');
-          console.log(typeof piece.getAttribute("place"))
-          console.log(typeof placement(wantedPosition));
           return false
         }
 
@@ -148,15 +144,11 @@ function dragElement(elmnt) {
   let pieceplacement = elmnt.getAttribute("place")
   if(valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] , elmnt)){
       let next = placement(elmnt)
+      let howmany = Number(elmnt.getAttribute("move"))
       elmnt.style.left = nodeArray[next].offsetLeft + 'px'
       elmnt.style.top = nodeArray[next].offsetTop + 'px'
-      elmnt.setAttribute("place", placement(elmnt))
-
-      //the problem might be that the second argument need to be a string 
-
-
-      //console.log(`changed place to ${next}`);
-      //elmnt.setAttribute("move", ()) 
+      elmnt.setAttribute("place", next)
+      elmnt.setAttribute("move", howmany+1) 
      
     }else{
       elmnt.style.top = nodeArray[pieceplacement].offsetTop + 'px'
@@ -189,9 +181,7 @@ windowRef.addEventListener('resize', function() {
       console.log(nodeArray[suposedtobe].offsetLeft);
       everything[o].style.left = nodeArray[suposedtobe].offsetLeft + 'px'
       everything[o].style.top = nodeArray[suposedtobe].offsetTop + 'px'
-      // top = everything[o].style.top 
-      // lefty = everything[o].style.left
-      //get place attribute and than use lefty and top array to place it back to its place 
+
     }
     pagewidth = windowRef.innerWidth;
   }
