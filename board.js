@@ -15,7 +15,7 @@ for (let i = 0; i < 8; i++) {
     
     square.className = "chess-block";
     square.id = `${i}${j}`;
-    if ((i + j) % 2 == 0) {
+    if ((i + j) % 2 != 0) {
       square.style.backgroundColor = "#000";
     }
     nodeArray.push(square)
@@ -71,7 +71,7 @@ let figures = {
   }
 }
 
-let test = figures.pawn.create(0)
+let test = figures.pawn.create(1)
 
 
 function placement(pos){
@@ -178,7 +178,7 @@ windowRef.addEventListener('resize', function() {
     
     for(let o = 0; o < everything.length; o++){
       suposedtobe = everything[o].getAttribute("place")
-      console.log(nodeArray[suposedtobe].offsetLeft);
+      console.log(suposedtobe);
       everything[o].style.left = nodeArray[suposedtobe].offsetLeft + 'px'
       everything[o].style.top = nodeArray[suposedtobe].offsetTop + 'px'
 
