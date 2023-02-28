@@ -188,4 +188,4 @@ windowRef.addEventListener('resize', function() {
 //Future: 
 
 //for the check function use a for loop to just check all of the pieces taking moves and if the king is on those take squares 
-
+//test
