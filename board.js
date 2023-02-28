@@ -1,13 +1,7 @@
 const board = document.getElementById("chess-board");
 const parentRect = board.getBoundingClientRect() 
 let nodeArray = [] 
-
-
-let distanceX = parentRect.x
-let distanceY = parentRect.y 
-
-let chessBoard = {}
-
+let piecePlaces = []
 
 for (let i = 0; i < 8; i++) {
   for (let j = 0; j < 8; j++) {
@@ -34,33 +28,26 @@ let figures = {
       b.setAttribute('pieceinfo', "pawn")
       b.setAttribute('move', 0)
       b.setAttribute('place', position)
-      //b.setAttribute('id','pawn')
-
-      dragElement(b)
       b.style.left = nodeArray[position].offsetLeft + 'px'
       b.style.top = nodeArray[position].offsetTop + 'px'
       board.appendChild(b)
-
-   
+      dragElement(b)
+      updatePositions()
     },
     take: function(){}, 
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
-      let currentposition = element.getAttribute("place")
-      currentposition =   Number(currentposition)
+      currentposition =   Number(element.getAttribute("place"))
       if((currentposition + 8)  == Placedwanted){
         return true
       }else if((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)){
         return true 
       }else{
-        console.log();
         return false
       }
     },
-    //replace the big if statement in the valid functio with just the move function 
     valid: function(wantedPosition, piece){
-
-
+      
       if(figures.pawn.move((piece), placement(wantedPosition))){
           return true
         }else{
@@ -71,8 +58,9 @@ let figures = {
   }
 }
 
-figures.pawn.create(1)
-figures.pawn.create(3)
+figures.pawn.create(7)
+figures.pawn.create(5)
+
 
 function placement(pos){
   let closest = null 
@@ -93,22 +81,32 @@ function placement(pos){
 
 
 
+
+
 function valid(piece){
-  if((parseInt(piece.offsetTop) < (distanceY + 480)&&(parseInt(piece.offsetLeft) < (480 + distanceX)))
-  &&((parseInt(piece.offsetTop) >= (distanceY - 20) )&&( parseInt(piece.offsetLeft) >= (distanceX-20)))){
-    return true
-  }else{
-    return false
-  }
-  
+  let elementRect = piece.getBoundingClientRect()
+  let divRect = board.getBoundingClientRect()
+
+  if(elementRect.left >= (divRect.left -= 20) && elementRect.right <= (divRect.right+=20) &&
+    elementRect.top >= divRect.top && elementRect.bottom <= (divRect.bottom += 20)){
+      return true
+    }else{
+      return false
+    }
 }
 
 
 
+function updatePositions(){
+  piecePlaces = []
+  let allThePieces = document.querySelectorAll(".piece")
+  for(let d = 0; d < allThePieces.length; d++){
+    piecePlaces.push(allThePieces[d].getAttribute("place"))
+  }
+}
 
 //-------------------DRAG ELEMENT FUNCTION -------------------
 
-//dragElement(document.querySelector('.piece'))
 
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -128,7 +126,6 @@ function dragElement(elmnt) {
   function elementDrag(e) {
     e = e || window.event;
     e.preventDefault();
-    // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
@@ -153,12 +150,12 @@ function dragElement(elmnt) {
     }else{
       elmnt.style.top = nodeArray[pieceplacement].offsetTop + 'px'
       elmnt.style.left = nodeArray[pieceplacement].offsetLeft + 'px'
-      console.log();
     }
     
+    updatePositions()
     document.onmouseup = null;
     document.onmousemove = null;
-   
+    console.log(piecePlaces);
     
   }
 }
@@ -173,30 +170,22 @@ let pagewidth = windowRef.innerWidth;
 
 windowRef.addEventListener('resize', function() {
   if (windowRef.innerWidth !== pagewidth) {
-    console.log('Page width has changed!');
     everything = document.querySelectorAll(".piece")
     
     for(let o = 0; o < everything.length; o++){
       suposedtobe = everything[o].getAttribute("place")
-      console.log(suposedtobe);
       everything[o].style.left = nodeArray[suposedtobe].offsetLeft + 'px'
       everything[o].style.top = nodeArray[suposedtobe].offsetTop + 'px'
 
     }
     pagewidth = windowRef.innerWidth;
+
   }
 });
 
 
-//NOTES FOR THE FUTURE 
-
-//my two problems are:
-//1. lastx and lasty don't work when resizing --- solved
-//2. the attribute place does not change  -- working on it 
-//3. don't know how to change the move attribute -- working on it
-
 
 //Future: 
 
-//for the check function use a for loop to just check all of the pieces takind moves and if the king is on those take squares 
-
+//for the check function use a for loop to just check all of the pieces taking moves and if the king is on those take squares 
+//test
