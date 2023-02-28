@@ -36,7 +36,7 @@ let figures = {
       b.setAttribute('place', position)
       //b.setAttribute('id','pawn')
 
-
+      dragElement(b)
       b.style.left = nodeArray[position].offsetLeft + 'px'
       b.style.top = nodeArray[position].offsetTop + 'px'
       board.appendChild(b)
@@ -71,8 +71,8 @@ let figures = {
   }
 }
 
-let test = figures.pawn.create(1)
-
+figures.pawn.create(1)
+figures.pawn.create(3)
 
 function placement(pos){
   let closest = null 
@@ -108,7 +108,7 @@ function valid(piece){
 
 //-------------------DRAG ELEMENT FUNCTION -------------------
 
-dragElement(document.querySelector('.piece'))
+//dragElement(document.querySelector('.piece'))
 
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
