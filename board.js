@@ -53,9 +53,8 @@ let figures = {
     }
     }
     return false 
-    }
+    },
 
-    }, 
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
       currentposition =   Number(element.getAttribute("place"))
@@ -74,10 +73,10 @@ let figures = {
         }else{
           return false
         }
-
+      
       }
     }
-  
+  }
   
 
 figures.pawn.create(7)
