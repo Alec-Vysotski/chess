@@ -1,7 +1,7 @@
 const board = document.getElementById("chess-board");
 const parentRect = board.getBoundingClientRect() 
 let nodeArray = [] 
-let piecePlaces = []
+
 
 for (let i = 0; i < 8; i++) {
   for (let j = 0; j < 8; j++) {
@@ -32,9 +32,19 @@ let figures = {
       b.style.top = nodeArray[position].offsetTop + 'px'
       board.appendChild(b)
       dragElement(b)
-      updatePositions()
     },
     take: function(){}, 
+    collision: function(placedWantedPosition){
+    let allThePieces = document.querySelectorAll(".piece")
+    for(let d = 0; d < allThePieces.length; d++){
+    if(allThePieces[d].getAttribute("place") == placedWantedPosition){
+      return true
+    }
+    }
+    return false 
+    }
+
+    }, 
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
       currentposition =   Number(element.getAttribute("place"))
@@ -54,9 +64,10 @@ let figures = {
           return false
         }
 
+      }
     }
-  }
-}
+  
+  
 
 figures.pawn.create(7)
 figures.pawn.create(5)
@@ -96,14 +107,6 @@ function valid(piece){
 }
 
 
-
-function updatePositions(){
-  piecePlaces = []
-  let allThePieces = document.querySelectorAll(".piece")
-  for(let d = 0; d < allThePieces.length; d++){
-    piecePlaces.push(allThePieces[d].getAttribute("place"))
-  }
-}
 
 //-------------------DRAG ELEMENT FUNCTION -------------------
 
@@ -152,7 +155,6 @@ function dragElement(elmnt) {
       elmnt.style.left = nodeArray[pieceplacement].offsetLeft + 'px'
     }
     
-    updatePositions()
     document.onmouseup = null;
     document.onmousemove = null;
     console.log(piecePlaces);
