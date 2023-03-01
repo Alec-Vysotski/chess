@@ -20,6 +20,17 @@ for (let i = 0; i < 8; i++) {
 //_______________________________________Initialization complete________________________________
 
 let figures = {
+  valid: function(piece){
+    let elementRect = piece.getBoundingClientRect()
+    let divRect = board.getBoundingClientRect()
+
+    if(elementRect.left >= (divRect.left -= 20) && elementRect.right <= (divRect.right+=20) &&
+      elementRect.top >= divRect.top && elementRect.bottom <= (divRect.bottom += 20)){
+        return true
+      }else{
+        return false
+      }
+  },
   pawn:{
     create: function(position){
       let b = document.createElement('img')
@@ -82,22 +93,8 @@ function placement(pos){
 
 
 
-
-function valid(piece){
-  let elementRect = piece.getBoundingClientRect()
-  let divRect = board.getBoundingClientRect()
-
-  if(elementRect.left >= (divRect.left -= 20) && elementRect.right <= (divRect.right+=20) &&
-    elementRect.top >= divRect.top && elementRect.bottom <= (divRect.bottom += 20)){
-      return true
-    }else{
-      return false
-    }
-}
-
-
-
 function updatePositions(){
+  //change this to check the wanted position
   piecePlaces = []
   let allThePieces = document.querySelectorAll(".piece")
   for(let d = 0; d < allThePieces.length; d++){
@@ -139,7 +136,7 @@ function dragElement(elmnt) {
 
   function closeDragElement(e) {
   let pieceplacement = elmnt.getAttribute("place")
-  if(valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] , elmnt)){
+  if(figures.valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] , elmnt)){
       let next = placement(elmnt)
       let howmany = Number(elmnt.getAttribute("move"))
       elmnt.style.left = nodeArray[next].offsetLeft + 'px'
