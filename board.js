@@ -46,22 +46,21 @@ let figures = {
     },
     take: function(){}, 
     collision: function(placedWantedPosition){
-    let allThePieces = document.querySelectorAll(".piece")
-    for(let d = 0; d < allThePieces.length; d++){
-    if(allThePieces[d].getAttribute("place") == placedWantedPosition){
-      return true
-    }
-    }
-    return false 
+      let allThePieces = document.querySelectorAll(".piece")
+      for(let d = 0; d < allThePieces.length; d++){
+        if(allThePieces[d].getAttribute("place") == placedWantedPosition){
+          return true 
+        }
+      }
+      return false 
     },
 
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
-      currentposition =   Number(element.getAttribute("place"))
-      if((currentposition + 8)  == Placedwanted){
+      currentposition = Number(element.getAttribute("place"))
+      console.log(this.collision(Placedwanted));
+      if(!this.collision(Placedwanted)&&(((currentposition + 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)))){
         return true
-      }else if((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)){
-        return true 
       }else{
         return false
       }
@@ -79,7 +78,7 @@ let figures = {
   }
   
 
-figures.pawn.create(7)
+figures.pawn.create(13)
 figures.pawn.create(5)
 
 
@@ -108,7 +107,8 @@ function placement(pos){
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     elmnt.onmousedown = dragMouseDown;
-
+    console.log( elmnt.style.zIndex );
+    
          
 
   function dragMouseDown(e) {
@@ -116,6 +116,7 @@ function dragElement(elmnt) {
     e.preventDefault();
     pos3 = e.clientX;
     pos4 = e.clientY;
+    elmnt.style.zIndex = "100"
     document.onmouseup = closeDragElement;
     document.onmousemove = elementDrag;
   }
@@ -151,7 +152,7 @@ function dragElement(elmnt) {
     
     document.onmouseup = null;
     document.onmousemove = null;
-    console.log(piecePlaces);
+    elmnt.style.zIndex = "10"
     
   }
 }
