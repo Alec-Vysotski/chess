@@ -31,18 +31,24 @@ let figures = {
         return false
       }
   },
-  pawn:{
+  wPawn:{
     create: function(position){
       let b = document.createElement('img')
       b.setAttribute('src', "images/wp.png")
       b.setAttribute('class', 'piece')
-      b.setAttribute('pieceinfo', "pawn")
+      b.setAttribute('pieceinfo', "wPawn")
       b.setAttribute('move', 0)
       b.setAttribute('place', position)
       b.style.left = nodeArray[position].offsetLeft + 'px'
       b.style.top = nodeArray[position].offsetTop + 'px'
       board.appendChild(b)
       dragElement(b)
+    },
+    checkpossibleMoves: function(currentpos){
+      
+      //for loop for elements that are in the valid section and then check if they are possible 
+      //through logic in this function 
+
     },
     take: function(){}, 
     collision: function(placedWantedPosition){
@@ -67,7 +73,7 @@ let figures = {
     },
     valid: function(wantedPosition, piece){
       
-      if(figures.pawn.move((piece), placement(wantedPosition))){
+      if(this.move((piece), placement(wantedPosition))){
           return true
         }else{
           return false
@@ -78,8 +84,8 @@ let figures = {
   }
   
 
-figures.pawn.create(13)
-figures.pawn.create(5)
+figures.wPawn.create(13)
+figures.wPawn.create(5)
 
 
 function placement(pos){
@@ -183,6 +189,8 @@ windowRef.addEventListener('resize', function() {
 
 
 //Future: 
+//make black pieces 
+//make moves over other pieces impossible 
 
 //for the check function use a for loop to just check all of the pieces taking moves and if the king is on those take squares 
 //test
