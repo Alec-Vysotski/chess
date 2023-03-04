@@ -1,14 +1,15 @@
 const board = document.getElementById("chess-board");
 const parentRect = board.getBoundingClientRect() 
 let nodeArray = [] 
-
+let howmany = 0
 
 for (let i = 0; i < 8; i++) {
   for (let j = 0; j < 8; j++) {
     let square = document.createElement("div");
-    
     square.className = "chess-block";
     square.id = `${i}${j}`;
+    square.setAttribute("number", howmany)
+    howmany++
     if ((i + j) % 2 != 0) {
       square.style.backgroundColor = "#000";
     }
@@ -18,6 +19,51 @@ for (let i = 0; i < 8; i++) {
 }
 
 //_______________________________________Initialization complete________________________________
+function checkpossibleMoves(piece, PlacedWantedpos){
+  //optimize it by putting the placed piece inside as an argument 
+  piecePlace = nodeArray[piece.getAttribute("place")].getAttribute("id")
+
+  let startx = piecePlace.slice(0,1) 
+  let starty = piecePlace.slice(1,2)
+
+  //it needs to gets its id since it doesn't have it rn
+
+  let finishx = PlacedWantedpos.id.slice(0,1)
+  let finishy = PlacedWantedpos.id.slice(1,2)
+
+  let row = Math.abs(startx - finishx)
+  let rowx = Math.abs(starty - finishy);
+  let biggest = Math.max(row,rowx)
+  console.log(biggest);
+  for(let h = 0; h < biggest; h++){
+
+    if(finishy >= starty){
+      starty++
+    } 
+    if(finishx >= startx){
+      startx++
+    }
+
+    let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") - 1
+    let everyPiece = document.querySelectorAll(".piece")
+
+    for(let q = 0; q < everyPiece.length; q++){
+      console.log("ran the for loop")
+      console.log(everyPiece[q].getAttribute("place"), theBlocksPlace)
+
+      if(everyPiece[q].getAttribute("place") == theBlocksPlace){
+        console.log("falsy");
+        return false        
+      }
+    }
+    //returns how many blocks away?
+  } 
+  console.log("everything finished");
+  return true
+}
+
+
+
 
 let figures = {
   valid: function(piece){
@@ -44,28 +90,13 @@ let figures = {
       board.appendChild(b)
       dragElement(b)
     },
-    checkpossibleMoves: function(currentpos){
-      
-      //for loop for elements that are in the valid section and then check if they are possible 
-      //through logic in this function 
 
-    },
     take: function(){}, 
-    collision: function(placedWantedPosition){
-      let allThePieces = document.querySelectorAll(".piece")
-      for(let d = 0; d < allThePieces.length; d++){
-        if(allThePieces[d].getAttribute("place") == placedWantedPosition){
-          return true 
-        }
-      }
-      return false 
-    },
 
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
       currentposition = Number(element.getAttribute("place"))
-      console.log(this.collision(Placedwanted));
-      if(!this.collision(Placedwanted)&&(((currentposition + 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)))){
+      if((((currentposition + 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)))){
         return true
       }else{
         return false
@@ -73,7 +104,7 @@ let figures = {
     },
     valid: function(wantedPosition, piece){
       
-      if(this.move((piece), placement(wantedPosition))){
+      if(this.move((piece), placement(wantedPosition))&& checkpossibleMoves(piece, wantedPosition)){
           return true
         }else{
           return false
@@ -84,8 +115,8 @@ let figures = {
   }
   
 
-figures.wPawn.create(13)
-figures.wPawn.create(5)
+figures.wPawn.create(9)
+figures.wPawn.create(1)
 
 
 function placement(pos){
@@ -112,9 +143,7 @@ function placement(pos){
 
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    elmnt.onmousedown = dragMouseDown;
-    console.log( elmnt.style.zIndex );
-    
+    elmnt.onmousedown = dragMouseDown;    
          
 
   function dragMouseDown(e) {
