@@ -60,7 +60,11 @@ function checkpossibleMoves(piece, PlacedWantedpos){
     let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") - 1
 
     if(goingBackwards){
+      try{
       theBlocksPlace = document.getElementById(`${startx}${starty+2}`).getAttribute("number") - 1
+      }catch(err){
+        return false
+      }
     }
     let everyPiece = document.querySelectorAll(".piece")
  
