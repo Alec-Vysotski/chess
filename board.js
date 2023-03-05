@@ -3,6 +3,7 @@ const parentRect = board.getBoundingClientRect()
 let nodeArray = [] 
 let howmany = 0
 
+
 for (let i = 0; i < 8; i++) {
   for (let j = 0; j < 8; j++) {
     let square = document.createElement("div");
@@ -11,7 +12,7 @@ for (let i = 0; i < 8; i++) {
     square.setAttribute("number", howmany)
     howmany++
     if ((i + j) % 2 != 0) {
-      square.style.backgroundColor = "#000";
+      square.style.backgroundColor = "#747270";
     }
     nodeArray.push(square)
     board.appendChild(square);
@@ -20,50 +21,75 @@ for (let i = 0; i < 8; i++) {
 
 //_______________________________________Initialization complete________________________________
 function checkpossibleMoves(piece, PlacedWantedpos){
-  //optimize it by putting the placed piece inside as an argument 
+
   piecePlace = nodeArray[piece.getAttribute("place")].getAttribute("id")
 
   let startx = piecePlace.slice(0,1) 
   let starty = piecePlace.slice(1,2)
-
-  //it needs to gets its id since it doesn't have it rn
+  let goingBackwards = false
+  //console.log(startx,starty);
 
   let finishx = PlacedWantedpos.id.slice(0,1)
   let finishy = PlacedWantedpos.id.slice(1,2)
 
+
+  if(startx > finishx){
+    goingBackwards = true
+  }
+
   let row = Math.abs(startx - finishx)
   let rowx = Math.abs(starty - finishy);
   let biggest = Math.max(row,rowx)
-  console.log(biggest);
-  for(let h = 0; h < biggest; h++){
 
-    if(finishy >= starty){
+  for(let h = 0; h < biggest; h++){
+  
+    if(!goingBackwards && (finishy >= starty)){
       starty++
     } 
-    if(finishx >= startx){
+    if(!goingBackwards &&(finishx >= startx)){
       startx++
     }
 
+    if(goingBackwards&&(finishy <= starty)){
+      starty--
+    } 
+    if(goingBackwards&&(finishx <= startx)){
+      startx--
+    }
+
     let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") - 1
+    if(goingBackwards){
+      theBlocksPlace = document.getElementById(`${startx}${starty+2}`).getAttribute("number") - 1
+    }
     let everyPiece = document.querySelectorAll(".piece")
-
+ 
     for(let q = 0; q < everyPiece.length; q++){
-      console.log("ran the for loop")
-      console.log(everyPiece[q].getAttribute("place"), theBlocksPlace)
+      let comparingPiece = everyPiece[q].getAttribute("place")
+      console.log(comparingPiece,  PlacedWantedpos.getAttribute("number"));
 
-      if(everyPiece[q].getAttribute("place") == theBlocksPlace){
+      if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[q]))){
+        everyPiece[q].remove()
+        console.log("deleted");
+        return true 
+      }
+
+      if(comparingPiece == theBlocksPlace){
         console.log("falsy");
         return false        
       }
     }
-    //returns how many blocks away?
+
   } 
-  console.log("everything finished");
+  if(figures[piece.getAttribute("pieceinfo")].move(piece, PlacedWantedpos.getAttribute("number")) == false){
+    return false
+  }
+
   return true
+
 }
 
 
-
+//___________________________________________Main Figures_________________________
 
 let figures = {
   valid: function(piece){
@@ -85,18 +111,30 @@ let figures = {
       b.setAttribute('pieceinfo', "wPawn")
       b.setAttribute('move', 0)
       b.setAttribute('place', position)
+      b.setAttribute("color", "w")
       b.style.left = nodeArray[position].offsetLeft + 'px'
       b.style.top = nodeArray[position].offsetTop + 'px'
       board.appendChild(b)
       dragElement(b)
     },
 
-    take: function(){}, 
+    take: function(piece, placedwanted, otherpiece){
+      //might have to give the wanted position the piece in question to check its color 
+      let color = piece.getAttribute("color")
+      let othercolor = otherpiece.getAttribute("color")
+      let piecepos = piece.getAttribute("place")
+      if((color != othercolor)&&(((piecepos+7) == placedwanted) || ((piecepos+9) == placedwanted))){
+        return true
+      }else{
+        return false
+      }
+      
+    }, 
 
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
       currentposition = Number(element.getAttribute("place"))
-      if((((currentposition + 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)))){
+      if((((currentposition + 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)))){ 
         return true
       }else{
         return false
@@ -104,20 +142,74 @@ let figures = {
     },
     valid: function(wantedPosition, piece){
       
-      if(this.move((piece), placement(wantedPosition))&& checkpossibleMoves(piece, wantedPosition)){
+      if(checkpossibleMoves(piece, wantedPosition)){
+        //put that this is true or (||) the take function is valid 
+        //but this will have to be different for different pieces
           return true
         }else{
           return false
         }
       
       }
-    }
+    },
+
+
+  bPawn: {
+    create: function(position){
+      let b = document.createElement('img')
+      b.setAttribute('src', "images/bp.png")
+      b.setAttribute('class', 'piece')
+      b.setAttribute('pieceinfo', "bPawn")
+      b.setAttribute('move', 0)
+      b.setAttribute('place', position)
+      b.setAttribute("color","b")
+      b.style.left = nodeArray[position].offsetLeft + 'px'
+      b.style.top = nodeArray[position].offsetTop + 'px'
+      board.appendChild(b)
+      dragElement(b)
+    },
+
+    take: function(piece, placedwanted, otherpiece){
+      //might have to give the wanted position the piece in question to check its color 
+      let color = piece.getAttribute("color")
+      let othercolor = otherpiece.getAttribute("color")
+      let piecepos = piece.getAttribute("place")
+      if((color != othercolor)&&((piecepos-7 == placedwanted) || (piecepos-9 == placedwanted))){
+        return true
+      }else{
+        return false
+      }
+      
+    }, 
+
+    move: function(element, Placedwanted){
+      //make sure you run the placement function for the placedwanted argument 
+      currentposition = Number(element.getAttribute("place"))
+      if((((currentposition - 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition - 16)  == Placedwanted)))){
+        return true
+      }else{
+        console.log(element, Placedwanted);
+        return false
+      }
+    },
+    valid: function(wantedPosition, piece){
+      
+      if(checkpossibleMoves(piece, wantedPosition)){
+          return true
+        }else{
+          return false
+        }
+      
+      }
+  }, 
+  
   }
   
 
 figures.wPawn.create(9)
 figures.wPawn.create(1)
-
+figures.bPawn.create(34)
+figures.bPawn.create(41)
 
 function placement(pos){
   let closest = null 
@@ -223,3 +315,7 @@ windowRef.addEventListener('resize', function() {
 
 //for the check function use a for loop to just check all of the pieces taking moves and if the king is on those take squares 
 //test
+
+//for the upgrading pawn function create a text box and whichever piece they select first 
+//remove the pawn and then create that piece in the same position (also if you want to make it easier on yourself
+//just automatically promote it to a queen
