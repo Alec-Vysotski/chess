@@ -40,6 +40,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
   let finishx = PlacedWantedpos.id.slice(0,1)
   let finishy = PlacedWantedpos.id.slice(1,2)
 
+  let everyPiece = document.querySelectorAll(".piece")
 
   if(startx > finishx){
     goingBackwards = true
@@ -74,35 +75,40 @@ function checkpossibleMoves(piece, PlacedWantedpos){
       theBlocksPlace = document.getElementById(`${startx}${Number(starty)+2}`).getAttribute("number") - 1
     }
 
-    let everyPiece = document.querySelectorAll(".piece")
- 
-    for(let q = 0; q < everyPiece.length; q++){
-      let comparingPiece = everyPiece[q].getAttribute("place")
-      console.log(comparingPiece,  PlacedWantedpos.getAttribute("number"));
-
-      if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[q]))){
-        everyPiece[q].remove()
-        console.log("deleted");
-        return true 
-      }
-
+    
+    for(let i = 0; i < everyPiece.length; i++){
+      let comparingPiece = everyPiece[i].getAttribute("place")
       if(comparingPiece == theBlocksPlace){
-        console.log(comparingPiece,  PlacedWantedpos.getAttribute("number"));
-
-        console.log("falsy");
+        console.log(comparingPiece, theBlocksPlace);
         return false        
       }
-    }
+    } // this if statement gets called before the for loop is done
 
   } 
   if(figures[piece.getAttribute("pieceinfo")].move(piece, PlacedWantedpos.getAttribute("number")) == false){
     return false
+  }
+  
+  for(let q = 0; q < everyPiece.length; q++){
+    let comparingPiece = everyPiece[q].getAttribute("place")
+    //console.log(everyPiece[q]);
+
+    if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[q]))){
+      everyPiece[q].remove()
+      console.log("deleted");
+      return true 
+    }
+
+
   }
 
   return true
 
 }
 
+//coments for this function:
+//it only works for pawns and with my bishop I can just skip over everything. Also the if statement
+//checking if the move is legal is not only not doing its job but also messing up
 
 //___________________________________________Main Figures_________________________
 
@@ -118,7 +124,7 @@ let figures = {
         return false
       }
   },
-  wPawn:{
+  wPawn:{ 
     create: function(position){
       let b = document.createElement('img')
       b.setAttribute('src', "images/wp.png")
@@ -158,8 +164,6 @@ let figures = {
     valid: function(wantedPosition, piece){
       
       if(checkpossibleMoves(piece, wantedPosition)){
-        //put that this is true or (||) the take function is valid 
-        //but this will have to be different for different pieces
           return true
         }else{
           return false
@@ -200,6 +204,7 @@ let figures = {
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
       currentposition = Number(element.getAttribute("place"))
+      //doesn't work for taking but works for collision ?????
       if((((currentposition - 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition - 16)  == Placedwanted)))){
         return true
       }else{
@@ -217,6 +222,55 @@ let figures = {
       
       }
   }, 
+
+  wBishop: {
+    create: function(position){
+      let b = document.createElement('img')
+      b.setAttribute('src', "images/wb.png")
+      b.setAttribute('class', 'piece')
+      b.setAttribute('pieceinfo', "wBishop")
+      b.setAttribute('move', 0)
+      b.setAttribute('place', position)
+      b.setAttribute("color", "w")
+      b.style.left = nodeArray[position].offsetLeft + 'px'
+      b.style.top = nodeArray[position].offsetTop + 'px'
+      board.appendChild(b)
+      dragElement(b)
+      
+    },
+    take: function(){
+      return true
+    }, 
+    move: function(element, Placedwanted){
+      
+      let piecePlaces = nodeArray[element.getAttribute("place")].getAttribute("id")
+      let PlacedWantedpos = nodeArray[Placedwanted].getAttribute("id")
+      console.log(PlacedWantedpos);
+
+
+      let startx = piecePlaces.slice(0,1) 
+      let starty = piecePlaces.slice(1,2)
+    
+      let finishx = PlacedWantedpos.slice(0,1)
+      let finishy = PlacedWantedpos.slice(1,2)
+
+      if((Math.abs(startx - finishx))==(Math.abs(starty - finishy))){
+        return true 
+      }else{
+        return false
+      }
+
+    },
+    valid: function(wantedPosition, piece){
+      if(checkpossibleMoves(piece, wantedPosition)){
+        return true
+      }else{
+        return false
+      }
+    }
+
+    
+  },
   
   }
   
@@ -225,6 +279,7 @@ figures.wPawn.create(10)
 figures.wPawn.create(1)
 figures.bPawn.create(34)
 figures.bPawn.create(41)
+figures.wBishop.create(25)
 
 function placement(pos){
   let closest = null 
