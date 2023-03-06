@@ -68,16 +68,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
     let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") - 1
 
-    // if(goingBackwards){
-    //   try{
-    //   console.log(startx, starty);
-    //   theBlocksPlace = document.getElementById(`${startx}${Number(starty)+2}`).getAttribute("number") - 1
-    //   }catch(err){
-    //     console.log('there was an error');
-    //     console.log(err);
-    //     return false
-    //   }
-    // }
+
 
     if(goingBackwards){
       theBlocksPlace = document.getElementById(`${startx}${Number(starty)+2}`).getAttribute("number") - 1
