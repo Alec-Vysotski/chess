@@ -48,31 +48,34 @@ function checkpossibleMoves(piece, PlacedWantedpos){
   }
 
   let row = Math.abs(startx - finishx)
-  let rowx = Math.abs(starty - finishy);
-  let biggest = Math.max(row,rowx)
+  let rowy = Math.abs(starty - finishy);
+  let biggest = Math.max(row,rowy)
 
   for(let h = 0; h < biggest; h++){
   
-    if(!goingBackwards && (finishy >= starty)){
-      starty++
-    } 
+    if((rowy > 0 )&& (finishy >= starty)){
+      starty++ 
+      rowy--
+    }
+
     if(!goingBackwards &&(finishx >= startx)){
       startx++
     }
 
-    if(goingBackwards&&(finishy <= starty)){
+    if((rowy > 0 )&& (finishy <= starty)){
       starty--
+      rowy--
     } 
     if(goingBackwards&&(finishx <= startx)){
       startx--
     }
 
-    let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") - 1
+    let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") -1
 
 
 
     if(goingBackwards){
-      theBlocksPlace = document.getElementById(`${startx}${Number(starty)+2}`).getAttribute("number") - 1
+      theBlocksPlace = document.getElementById(`${startx}${Number(starty)+2}`).getAttribute("number")-1 
     }
 
     
