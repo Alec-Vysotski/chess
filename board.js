@@ -35,6 +35,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
   if(startx > finishx){
     goingBackwards = true
+    console.log("going backwards");
   }
 
   let row = Math.abs(startx - finishx)
@@ -70,7 +71,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
  
     for(let q = 0; q < everyPiece.length; q++){
       let comparingPiece = everyPiece[q].getAttribute("place")
-      console.log(comparingPiece,  PlacedWantedpos.getAttribute("number"));
+      //console.log(comparingPiece,  PlacedWantedpos.getAttribute("number"));
 
       if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[q]))){
         everyPiece[q].remove()
@@ -127,8 +128,8 @@ let figures = {
       //might have to give the wanted position the piece in question to check its color 
       let color = piece.getAttribute("color")
       let othercolor = otherpiece.getAttribute("color")
-      let piecepos = piece.getAttribute("place")
-      if((color != othercolor)&&(((piecepos+7) == placedwanted) || ((piecepos+9) == placedwanted))){
+      let piecepos = Number(piece.getAttribute("place"))
+      if((color != othercolor)&&((piecepos+7 == placedwanted) || (piecepos+9 == placedwanted))){
         return true
       }else{
         return false
@@ -211,7 +212,7 @@ let figures = {
   }
   
 
-figures.wPawn.create(9)
+figures.wPawn.create(10)
 figures.wPawn.create(1)
 figures.bPawn.create(34)
 figures.bPawn.create(41)
