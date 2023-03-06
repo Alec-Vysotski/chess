@@ -2,7 +2,7 @@ const board = document.getElementById("chess-board");
 const parentRect = board.getBoundingClientRect() 
 let nodeArray = [] 
 let howmany = 0
-
+let HowManyMoves = 0
 
 for (let i = 0; i < 8; i++) {
   for (let j = 0; j < 8; j++) {
@@ -23,6 +23,14 @@ for (let i = 0; i < 8; i++) {
 function checkpossibleMoves(piece, PlacedWantedpos){
 
   piecePlace = nodeArray[piece.getAttribute("place")].getAttribute("id")
+
+  if((piece.getAttribute("color") == "w") && (HowManyMoves % 2 != 0)){
+    return false
+  }
+
+  if((piece.getAttribute("color") == "b") && (HowManyMoves % 2 == 0)){
+    return false
+  }
 
   let startx = piecePlace.slice(0,1) 
   let starty = piecePlace.slice(1,2)
@@ -60,18 +68,26 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
     let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") - 1
 
+    // if(goingBackwards){
+    //   try{
+    //   console.log(startx, starty);
+    //   theBlocksPlace = document.getElementById(`${startx}${Number(starty)+2}`).getAttribute("number") - 1
+    //   }catch(err){
+    //     console.log('there was an error');
+    //     console.log(err);
+    //     return false
+    //   }
+    // }
+
     if(goingBackwards){
-      try{
-      theBlocksPlace = document.getElementById(`${startx}${starty+2}`).getAttribute("number") - 1
-      }catch(err){
-        return false
-      }
+      theBlocksPlace = document.getElementById(`${startx}${Number(starty)+2}`).getAttribute("number") - 1
     }
+
     let everyPiece = document.querySelectorAll(".piece")
  
     for(let q = 0; q < everyPiece.length; q++){
       let comparingPiece = everyPiece[q].getAttribute("place")
-      //console.log(comparingPiece,  PlacedWantedpos.getAttribute("number"));
+      console.log(comparingPiece,  PlacedWantedpos.getAttribute("number"));
 
       if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[q]))){
         everyPiece[q].remove()
@@ -80,6 +96,8 @@ function checkpossibleMoves(piece, PlacedWantedpos){
       }
 
       if(comparingPiece == theBlocksPlace){
+        console.log(comparingPiece,  PlacedWantedpos.getAttribute("number"));
+
         console.log("falsy");
         return false        
       }
@@ -179,8 +197,8 @@ let figures = {
       //might have to give the wanted position the piece in question to check its color 
       let color = piece.getAttribute("color")
       let othercolor = otherpiece.getAttribute("color")
-      let piecepos = piece.getAttribute("place")
-      if((color != othercolor)&&((piecepos-7 == placedwanted) || (piecepos-9 == placedwanted))){
+      let piecepos = Number(piece.getAttribute("place"))
+      if((color != othercolor)&&(((piecepos-7 )== placedwanted) || ((piecepos-9) == placedwanted))){
         return true
       }else{
         return false
@@ -277,7 +295,8 @@ function dragElement(elmnt) {
       elmnt.style.top = nodeArray[next].offsetTop + 'px'
       elmnt.setAttribute("place", next)
       elmnt.setAttribute("move", howmany+1) 
-     
+      HowManyMoves++
+
     }else{
       elmnt.style.top = nodeArray[pieceplacement].offsetTop + 'px'
       elmnt.style.left = nodeArray[pieceplacement].offsetLeft + 'px'
@@ -286,6 +305,7 @@ function dragElement(elmnt) {
     document.onmouseup = null;
     document.onmousemove = null;
     elmnt.style.zIndex = "10"
+    
     
   }
 }
