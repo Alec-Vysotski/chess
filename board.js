@@ -34,7 +34,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
   let startx = piecePlace.slice(0,1) 
   let starty = piecePlace.slice(1,2)
-  let goingBackwards = false
+
 
   let finishx = PlacedWantedpos.id.slice(0,1)
   let finishy = PlacedWantedpos.id.slice(1,2)
@@ -79,14 +79,17 @@ function checkpossibleMoves(piece, PlacedWantedpos){
         console.log(document.getElementById(`${startx}${starty}`).getAttribute("number") );
         return false        
       }
-      if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[i]))){
-        everyPiece[i].remove()
-        console.log("deleted");
-        return true 
-      }
     } 
 
   } 
+  for(let i = 0; i < everyPiece.length; i++){
+    let comparingPiece = everyPiece[i].getAttribute("place")
+    if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[i]))){
+      everyPiece[i].remove()
+      console.log("deleted");
+      return true 
+    }}
+
   if(figures[piece.getAttribute("pieceinfo")].move(piece, PlacedWantedpos.getAttribute("number")) == false){
     ("not happening")
     return false
