@@ -266,6 +266,102 @@ let figures = {
 
     
   },
+
+  bBishop: {
+    create: function(position){
+      let b = document.createElement('img')
+      b.setAttribute('src', "images/bb.png")
+      b.setAttribute('class', 'piece')
+      b.setAttribute('pieceinfo', "bBishop")
+      b.setAttribute('move', 0)
+      b.setAttribute('place', position)
+      b.setAttribute("color", "b")
+      b.style.left = nodeArray[position].offsetLeft + 'px'
+      b.style.top = nodeArray[position].offsetTop + 'px'
+      board.appendChild(b)
+      dragElement(b)
+      
+    },
+    take: function(){
+      return true
+    }, 
+    move: function(element, Placedwanted){
+      
+      let piecePlaces = nodeArray[element.getAttribute("place")].getAttribute("id")
+      let PlacedWantedpos = nodeArray[Placedwanted].getAttribute("id")
+      console.log(PlacedWantedpos);
+
+
+      let startx = piecePlaces.slice(0,1) 
+      let starty = piecePlaces.slice(1,2)
+    
+      let finishx = PlacedWantedpos.slice(0,1)
+      let finishy = PlacedWantedpos.slice(1,2)
+
+      if((Math.abs(startx - finishx))==(Math.abs(starty - finishy))){
+        return true 
+      }else{
+        return false
+      }
+
+    },
+    valid: function(wantedPosition, piece){
+      if(checkpossibleMoves(piece, wantedPosition)){
+        return true
+      }else{
+        return false
+      }
+    }
+
+    
+  },
+  wRook:{
+    create: function(position){
+      let b = document.createElement('img')
+      b.setAttribute('src', "images/wr.png")
+      b.setAttribute('class', 'piece')
+      b.setAttribute('pieceinfo', "wRook")
+      b.setAttribute('move', 0)
+      b.setAttribute('place', position)
+      b.setAttribute("color", "w")
+      b.style.left = nodeArray[position].offsetLeft + 'px'
+      b.style.top = nodeArray[position].offsetTop + 'px'
+      board.appendChild(b)
+      dragElement(b)
+    },
+    take: function(){
+      return true
+    }, 
+    move: function(element, Placedwanted){
+      
+      let piecePlaces = nodeArray[element.getAttribute("place")].getAttribute("id")
+      let PlacedWantedpos = nodeArray[Placedwanted].getAttribute("id")
+      console.log(PlacedWantedpos);
+
+
+      let startx = piecePlaces.slice(0,1) 
+      let starty = piecePlaces.slice(1,2)
+    
+      let finishx = PlacedWantedpos.slice(0,1)
+      let finishy = PlacedWantedpos.slice(1,2)
+
+      if((startx == finishx)&&(starty != finishy)){
+        return true 
+      }else if((starty == finishy)&&(startx != finishx)){
+        return true
+      }else{
+        return false
+      }
+
+    },
+    valid: function(wantedPosition, piece){
+      if(checkpossibleMoves(piece, wantedPosition)){
+        return true
+      }else{
+        return false
+      }
+    }
+  }
   
   }
   
@@ -275,6 +371,8 @@ figures.wPawn.create(1)
 figures.bPawn.create(34)
 figures.bPawn.create(41)
 figures.wBishop.create(25)
+figures.bBishop.create(45)
+figures.wRook.create(0)
 
 function placement(pos){
   let closest = null 
