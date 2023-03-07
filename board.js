@@ -81,8 +81,8 @@ function checkpossibleMoves(piece, PlacedWantedpos){
     
     for(let i = 0; i < everyPiece.length; i++){
       let comparingPiece = everyPiece[i].getAttribute("place")
-      if(comparingPiece == theBlocksPlace){
-        console.log(comparingPiece, theBlocksPlace);
+      if((comparingPiece == theBlocksPlace) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[i])) != true){
+        console.log(everyPiece[i], document.getElementById(`${startx}${Number(starty)+2}`))
         return false        
       }
     } // this if statement gets called before the for loop is done
