@@ -79,6 +79,10 @@ function checkpossibleMoves(piece, PlacedWantedpos){
         console.log(document.getElementById(`${startx}${starty}`).getAttribute("number") );
         return false        
       }
+      if((comparingPiece == theBlocksPlace)&&((piece.getAttribute("color")==everyPiece[i].getAttribute("color"))||(!figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[i])))){
+        console.log("bro is testing friendly fire");
+        return false
+      }
     } 
 
   } 
