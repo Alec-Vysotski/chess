@@ -35,17 +35,13 @@ function checkpossibleMoves(piece, PlacedWantedpos){
   let startx = piecePlace.slice(0,1) 
   let starty = piecePlace.slice(1,2)
   let goingBackwards = false
-  //console.log(startx,starty);
 
   let finishx = PlacedWantedpos.id.slice(0,1)
   let finishy = PlacedWantedpos.id.slice(1,2)
 
   let everyPiece = document.querySelectorAll(".piece")
-
-  if(startx > finishx){
-    goingBackwards = true
-    console.log("going backwards");
-  }
+  let goingBackwardsY = starty > finishy
+  let goingBackwardsX = startx > finishx 
 
   let row = Math.abs(startx - finishx)
   let rowy = Math.abs(starty - finishy);
@@ -53,57 +49,50 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
   for(let h = 0; h < biggest; h++){
   
-    if((rowy > 0 )&& (finishy >= starty)){
+    if((rowy > 0 ) && (!goingBackwardsY)){
       starty++ 
       rowy--
     }
 
-    if(!goingBackwards &&(finishx >= startx)){
+    if((row > 0) &&(!goingBackwardsX)){
       startx++
+      row--
     }
 
-    if((rowy > 0 )&& (finishy <= starty)){
+    if((rowy > 0)&& (goingBackwardsY)){
       starty--
       rowy--
     } 
-    if(goingBackwards&&(finishx <= startx)){
+    if((row > 0)&&(goingBackwardsX)){
       startx--
+      row--
     }
 
-    let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") -1
-
-
-
-    if(goingBackwards){
-      theBlocksPlace = document.getElementById(`${startx}${Number(starty)+2}`).getAttribute("number")-1 
-    }
-
+    let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") 
+    console.log(document.getElementById(`${startx}${starty}`));
     
     for(let i = 0; i < everyPiece.length; i++){
       let comparingPiece = everyPiece[i].getAttribute("place")
-      if(comparingPiece == theBlocksPlace){
-        console.log(comparingPiece, theBlocksPlace);
+      if((comparingPiece == theBlocksPlace)&&(theBlocksPlace != PlacedWantedpos.getAttribute("number"))){
+        console.log(theBlocksPlace, PlacedWantedpos);
+        console.log("falsy");
+        console.log(document.getElementById(`${startx}${starty}`).getAttribute("number") );
         return false        
       }
-    } // this if statement gets called before the for loop is done
+      if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[i]))){
+        everyPiece[i].remove()
+        console.log("deleted");
+        return true 
+      }
+    } 
 
   } 
   if(figures[piece.getAttribute("pieceinfo")].move(piece, PlacedWantedpos.getAttribute("number")) == false){
+    ("not happening")
     return false
   }
   
-  for(let q = 0; q < everyPiece.length; q++){
-    let comparingPiece = everyPiece[q].getAttribute("place")
-    //console.log(everyPiece[q]);
 
-    if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[q]))){
-      everyPiece[q].remove()
-      console.log("deleted");
-      return true 
-    }
-
-
-  }
 
   return true
 
