@@ -746,6 +746,27 @@ function placement(pos){
   return(closest)
 
 }
+function upgrading(){
+  let everyPiece = document.querySelectorAll(".piece")
+  for(let i = 0; i < everyPiece.length; i++){
+    let where = everyPiece[i].getAttribute("place")
+    if(everyPiece[i].getAttribute("color")=="w"){
+      if((everyPiece[i].getAttribute("pieceinfo")=="wPawn")&&(where>55)){
+          everyPiece[i].remove()
+          figures.wQueen.create(where)
+        }
+        
+    }else{
+      if((everyPiece[i].getAttribute("pieceinfo")=="bPawn")&&(where<8)){
+        everyPiece[i].remove()
+        figures.bQueen.create(where)
+      }
+    }
+
+  }
+      
+}
+  
 
 
 
@@ -791,7 +812,7 @@ function dragElement(elmnt) {
       elmnt.setAttribute("place", next)
       elmnt.setAttribute("move", howmany+1) 
       HowManyMoves++
-
+      upgrading()
     }else{
       elmnt.style.top = nodeArray[pieceplacement].offsetTop + 'px'
       elmnt.style.left = nodeArray[pieceplacement].offsetLeft + 'px'
@@ -831,12 +852,4 @@ windowRef.addEventListener('resize', function() {
 
 
 //Future: 
-//make black pieces 
-//make moves over other pieces impossible 
-
-//for the check function use a for loop to just check all of the pieces taking moves and if the king is on those take squares 
-//test
-
-//for the upgrading pawn function create a text box and whichever piece they select first 
-//remove the pawn and then create that piece in the same position (also if you want to make it easier on yourself
-//just automatically promote it to a queen
+//create rules for check, checkmate and draws(when repeating moves)
