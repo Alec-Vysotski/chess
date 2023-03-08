@@ -111,9 +111,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
 }
 
-//coments for this function:
-//it only works for pawns and with my bishop I can just skip over everything. Also the if statement
-//checking if the move is legal is not only not doing its job but also messing up
+
 
 //___________________________________________Main Figures_________________________
 
@@ -166,7 +164,7 @@ let figures = {
       }
     },
     valid: function(wantedPosition, piece){
-      
+
       if(checkpossibleMoves(piece, wantedPosition)){
           return true
         }else{
@@ -542,6 +540,9 @@ let figures = {
       }
   },
   valid: function(wantedPosition, piece){
+    if(HowManyMoves % 2 != 0){
+      return false
+    }
     let everyPiece = document.querySelectorAll(".piece")
     let wantedpos = placement(wantedPosition)
     for(let i = 0; i < everyPiece.length; i++ ){
@@ -559,6 +560,7 @@ let figures = {
   }
   },
   bKnight: {
+    
     create: function(position){
       let b = document.createElement('img')
       b.setAttribute('src', "images/bkn.png")
@@ -585,6 +587,9 @@ let figures = {
       }
   },
   valid: function(wantedPosition, piece){
+    if(HowManyMoves % 2 == 0){
+      return false
+    }
     let everyPiece = document.querySelectorAll(".piece")
     let wantedpos = placement(wantedPosition)
     for(let i = 0; i < everyPiece.length; i++ ){
