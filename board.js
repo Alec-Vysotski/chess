@@ -94,7 +94,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
     let comparingPiece = everyPiece[i].getAttribute("place")
     let color = piece.getAttribute("color")
       let othercolor = everyPiece[i].getAttribute("color")
-    if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor)){
+    if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor) ){
       everyPiece[i].remove()
       console.log("deleted");
       return true 
@@ -241,8 +241,8 @@ let figures = {
       dragElement(b)
       
     },
-    take: function(){
-      return true
+    take: function(element, placedwanted){
+      return this.move(element, placedwanted)
     }, 
     move: function(element, Placedwanted){
       
@@ -290,8 +290,8 @@ let figures = {
       dragElement(b)
       
     },
-    take: function(){
-      return true
+    take: function(element, placedwanted){
+      return this.move(element, placedwanted)
     }, 
     move: function(element, Placedwanted){
       
@@ -337,8 +337,8 @@ let figures = {
       board.appendChild(b)
       dragElement(b)
     },
-    take: function(){
-      return true
+    take: function(element, placedwanted){
+      return this.move(element, placedwanted)
     }, 
     move: function(element, Placedwanted){
       
@@ -384,8 +384,8 @@ let figures = {
       board.appendChild(b)
       dragElement(b)
     },
-    take: function(){
-      return true
+    take: function(element, placedwanted){
+      return this.move(element, placedwanted)
     }, 
     move: function(element, Placedwanted){
       
@@ -431,8 +431,8 @@ let figures = {
       board.appendChild(b)
       dragElement(b)
     },
-    take: function(){
-      return true
+    take: function(element, placedwanted){
+      return this.move(element, placedwanted)
     }, 
     move: function(element, Placedwanted){
       
@@ -480,8 +480,8 @@ let figures = {
       board.appendChild(b)
       dragElement(b)
     },
-    take: function(){
-      return true
+    take: function(element, placedwanted){
+      return this.move(element, placedwanted)
     }, 
     move: function(element, Placedwanted){
       
@@ -615,9 +615,9 @@ let figures = {
       board.appendChild(b)
       dragElement(b)
     },
-    take: function(){
-      return true
-    },    
+    take: function(element, placedwanted){
+      return this.move(element, placedwanted)
+    },  
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
       currentposition = Number(element.getAttribute("place"))
@@ -657,9 +657,9 @@ let figures = {
       board.appendChild(b)
       dragElement(b)
     },
-    take: function(){
-      return true
-    },    
+    take: function(element, placedwanted){
+      return this.move(element, placedwanted)
+    }, 
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
       currentposition = Number(element.getAttribute("place"))
