@@ -83,7 +83,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
         //console.log(document.getElementById(`${startx}${starty}`).getAttribute("number") );
         return false        
       }
-      if((comparingPiece == theBlocksPlace)&&((piece.getAttribute("color")==everyPiece[i].getAttribute("color"))||(!figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[i])))){
+      if((comparingPiece == theBlocksPlace)&&((piece.getAttribute("color")==everyPiece[i].getAttribute("color"))||(!figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"))))){
         console.log("bro is testing friendly fire");
         return false
       }
@@ -94,7 +94,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
     let comparingPiece = everyPiece[i].getAttribute("place")
     let color = piece.getAttribute("color")
       let othercolor = everyPiece[i].getAttribute("color")
-    if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"), everyPiece[i]))&&(color != othercolor)){
+    if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor)){
       everyPiece[i].remove()
       console.log("deleted");
       return true 
@@ -144,12 +144,11 @@ let figures = {
       dragElement(b)
     },
 
-    take: function(piece, placedwanted, otherpiece){
+    take: function(piece, placedwanted,){
       //might have to give the wanted position the piece in question to check its color 
-      let color = piece.getAttribute("color")
-      let othercolor = otherpiece.getAttribute("color")
+  
       let piecepos = Number(piece.getAttribute("place"))
-      if((color != othercolor)&&((piecepos+7 == placedwanted) || (piecepos+9 == placedwanted))){
+      if(((piecepos+7 == placedwanted) || (piecepos+9 == placedwanted))){
         return true
       }else{
         return false
@@ -193,12 +192,11 @@ let figures = {
       dragElement(b)
     },
 
-    take: function(piece, placedwanted, otherpiece){
+    take: function(piece, placedwanted){
       //might have to give the wanted position the piece in question to check its color 
-      let color = piece.getAttribute("color")
-      let othercolor = otherpiece.getAttribute("color")
+
       let piecepos = Number(piece.getAttribute("place"))
-      if((color != othercolor)&&(((piecepos-7 )== placedwanted) || ((piecepos-9) == placedwanted))){
+      if((((piecepos-7 )== placedwanted) || ((piecepos-9) == placedwanted))){
         return true
       }else{
         return false
@@ -517,7 +515,93 @@ let figures = {
       }
     }
   },
-  
+  wKnight: {
+    create: function(position){
+      let b = document.createElement('img')
+      b.setAttribute('src', "images/wkn.png")
+      b.setAttribute('class', 'piece')
+      b.setAttribute('pieceinfo', "wKnight")
+      b.setAttribute('move', 0)
+      b.setAttribute('place', position)
+      b.setAttribute("color", "w")
+      b.style.left = nodeArray[position].offsetLeft + 'px'
+      b.style.top = nodeArray[position].offsetTop + 'px'
+      board.appendChild(b)
+      dragElement(b)
+    },
+    take: function(takingPiece){
+      takingPiece.remove()
+    }, 
+    move: function(element, placedwanted){
+      let piecepos = Number(element.getAttribute("place"))
+      if((((piecepos-17 )== placedwanted) || ((piecepos-15) == placedwanted)||((piecepos-10) == placedwanted)||((piecepos+6) == placedwanted)||((piecepos+15) == placedwanted)||((piecepos+17) == placedwanted)||
+      ((piecepos-6) == placedwanted)||((piecepos+10) == placedwanted))){
+        return true
+      }else{
+        return false
+      }
+  },
+  valid: function(wantedPosition, piece){
+    let everyPiece = document.querySelectorAll(".piece")
+    let wantedpos = placement(wantedPosition)
+    for(let i = 0; i < everyPiece.length; i++ ){
+      if((!this.move(piece, wantedpos))){
+        return false
+      }
+      if((everyPiece[i].getAttribute("place") == wantedpos)&&(everyPiece[i].getAttribute("color")==piece.getAttribute("color"))){
+        return false
+      }if(everyPiece[i].getAttribute("place")==wantedpos){
+        this.take(everyPiece[i])
+      }
+    }
+    return true
+
+  }
+  },
+  bKnight: {
+    create: function(position){
+      let b = document.createElement('img')
+      b.setAttribute('src', "images/bkn.png")
+      b.setAttribute('class', 'piece')
+      b.setAttribute('pieceinfo', "bKnight")
+      b.setAttribute('move', 0)
+      b.setAttribute('place', position)
+      b.setAttribute("color", "b")
+      b.style.left = nodeArray[position].offsetLeft + 'px'
+      b.style.top = nodeArray[position].offsetTop + 'px'
+      board.appendChild(b)
+      dragElement(b)
+    },
+    take: function(takingPiece){
+      takingPiece.remove()
+    }, 
+    move: function(element, placedwanted){
+      let piecepos = Number(element.getAttribute("place"))
+      if((((piecepos-17 )== placedwanted) || ((piecepos-15) == placedwanted)||((piecepos-10) == placedwanted)||((piecepos+6) == placedwanted)||((piecepos+15) == placedwanted)||((piecepos+17) == placedwanted)||
+      ((piecepos-6) == placedwanted)||((piecepos+10) == placedwanted))){
+        return true
+      }else{
+        return false
+      }
+  },
+  valid: function(wantedPosition, piece){
+    let everyPiece = document.querySelectorAll(".piece")
+    let wantedpos = placement(wantedPosition)
+    for(let i = 0; i < everyPiece.length; i++ ){
+      if((!this.move(piece, wantedpos))){
+        return false
+      }
+      if((everyPiece[i].getAttribute("place") == wantedpos)&&(everyPiece[i].getAttribute("color")==piece.getAttribute("color"))){
+        return false
+      }if(everyPiece[i].getAttribute("place")==wantedpos){
+        this.take(everyPiece[i])
+      }
+    }
+    return true
+
+  }
+  },
+
   }
   
 
@@ -531,6 +615,8 @@ figures.wRook.create(0)
 figures.bRook.create(60)
 figures.wQueen.create(5)
 figures.bQueen.create(62)
+figures.wKnight.create(28)
+figures.bKnight.create(2)
 
 function placement(pos){
   let closest = null 
