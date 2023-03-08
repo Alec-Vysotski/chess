@@ -601,22 +601,129 @@ let figures = {
 
   }
   },
+  wKing: {
+    create: function(position){
+      let b = document.createElement('img')
+      b.setAttribute('src', "images/wk.png")
+      b.setAttribute('class', 'piece')
+      b.setAttribute('pieceinfo', "wKing")
+      b.setAttribute('move', 0)
+      b.setAttribute('place', position)
+      b.setAttribute("color", "w")
+      b.style.left = nodeArray[position].offsetLeft + 'px'
+      b.style.top = nodeArray[position].offsetTop + 'px'
+      board.appendChild(b)
+      dragElement(b)
+    },
+    take: function(){
+      return true
+    },    
+    move: function(element, Placedwanted){
+      //make sure you run the placement function for the placedwanted argument 
+      currentposition = Number(element.getAttribute("place"))
+      if(((currentposition + 8)  == Placedwanted)||((currentposition + 9)  == Placedwanted)
+      ||((currentposition + 7)  == Placedwanted)||((currentposition + 1)  == Placedwanted)||
+      ((currentposition -1 )  == Placedwanted)||((currentposition - 8)  == Placedwanted)||
+      ((currentposition - 7)  == Placedwanted)||((currentposition - 9)  == Placedwanted)){ 
+        return true
+      }else{
+        return false
+      }
+    },
+    valid: function(wantedPosition, piece){
+      
+      if(checkpossibleMoves(piece, wantedPosition)){
+          return true
+        }else{
+          return false
+        }
+      
+      }
+    
+
+
+  },
+  bKing: {
+    create: function(position){
+      let b = document.createElement('img')
+      b.setAttribute('src', "images/bk.png")
+      b.setAttribute('class', 'piece')
+      b.setAttribute('pieceinfo', "bKing")
+      b.setAttribute('move', 0)
+      b.setAttribute('place', position)
+      b.setAttribute("color", "b")
+      b.style.left = nodeArray[position].offsetLeft + 'px'
+      b.style.top = nodeArray[position].offsetTop + 'px'
+      board.appendChild(b)
+      dragElement(b)
+    },
+    take: function(){
+      return true
+    },    
+    move: function(element, Placedwanted){
+      //make sure you run the placement function for the placedwanted argument 
+      currentposition = Number(element.getAttribute("place"))
+      if(((currentposition + 8)  == Placedwanted)||((currentposition + 9)  == Placedwanted)
+      ||((currentposition + 7)  == Placedwanted)||((currentposition + 1)  == Placedwanted)||
+      ((currentposition -1 )  == Placedwanted)||((currentposition - 8)  == Placedwanted)||
+      ((currentposition - 7)  == Placedwanted)||((currentposition - 9)  == Placedwanted)){ 
+        return true
+      }else{
+        return false
+      }
+    },
+    valid: function(wantedPosition, piece){
+      
+      if(checkpossibleMoves(piece, wantedPosition)){
+          return true
+        }else{
+          return false
+        }
+      
+      }
+    
+
+
+  },
 
   }
   
 
+figures.wPawn.create(8)
+figures.wPawn.create(9)
 figures.wPawn.create(10)
-figures.wPawn.create(1)
-figures.bPawn.create(34)
-figures.bPawn.create(41)
-figures.wBishop.create(25)
-figures.bBishop.create(45)
+figures.wPawn.create(11)
+figures.wPawn.create(12)
+figures.wPawn.create(13)
+figures.wPawn.create(14)
+figures.wPawn.create(15)
 figures.wRook.create(0)
-figures.bRook.create(60)
-figures.wQueen.create(5)
-figures.bQueen.create(62)
-figures.wKnight.create(28)
-figures.bKnight.create(2)
+figures.wRook.create(7)
+figures.wKnight.create(1)
+figures.wKnight.create(6)
+figures.wBishop.create(2)
+figures.wBishop.create(5)
+figures.wQueen.create(3)
+figures.wKing.create(4)
+
+figures.bPawn.create(48)
+figures.bPawn.create(49)
+figures.bPawn.create(50)
+figures.bPawn.create(51)
+figures.bPawn.create(52)
+figures.bPawn.create(53)
+figures.bPawn.create(54)
+figures.bPawn.create(55)
+figures.bRook.create(63)
+figures.bRook.create(56)
+
+figures.bKnight.create(57)
+figures.bKnight.create(62)
+figures.bBishop.create(58)
+figures.bBishop.create(61)
+figures.bQueen.create(60)
+figures.bKing.create(59)
+
 
 function placement(pos){
   let closest = null 
