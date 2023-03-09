@@ -19,6 +19,7 @@ for (let i = 0; i < 8; i++) {
   }
 }
 
+
 //_______________________________________Initialization complete________________________________
 function checkpossibleMoves(piece, PlacedWantedpos){
 
@@ -151,6 +152,12 @@ function whosMove(){
   }
 }
 
+function checkingChecks(){
+  /*
+
+  */
+}
+
 //___________________________________________Main Figures_________________________
 
 let figures = {
@@ -169,7 +176,7 @@ let figures = {
   wPawn:{ 
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/wp.png")
+      b.setAttribute('src', "images/wp.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "wPawn")
       b.setAttribute('move', 0)
@@ -217,7 +224,7 @@ let figures = {
   bPawn: {
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/bp.png")
+      b.setAttribute('src', "images/bp.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "bPawn")
       b.setAttribute('move', 0)
@@ -244,7 +251,6 @@ let figures = {
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
       currentposition = Number(element.getAttribute("place"))
-      //doesn't work for taking but works for collision ?????
       if((((currentposition + 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)))){
         return true
       }else{
@@ -266,7 +272,7 @@ let figures = {
   wBishop: {
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/wb.png")
+      b.setAttribute('src', "images/wb.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "wBishop")
       b.setAttribute('move', 0)
@@ -315,7 +321,7 @@ let figures = {
   bBishop: {
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/bb.png")
+      b.setAttribute('src', "images/bb.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "bBishop")
       b.setAttribute('move', 0)
@@ -363,7 +369,7 @@ let figures = {
   wRook:{
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/wr.png")
+      b.setAttribute('src', "images/wr.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "wRook")
       b.setAttribute('move', 0)
@@ -410,7 +416,7 @@ let figures = {
   bRook:{
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/br.png")
+      b.setAttribute('src', "images/br.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "bRook")
       b.setAttribute('move', 0)
@@ -457,7 +463,7 @@ let figures = {
   wQueen:{
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/wq.png")
+      b.setAttribute('src', "images/wq.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "wQueen")
       b.setAttribute('move', 0)
@@ -506,7 +512,7 @@ let figures = {
   bQueen:{
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/bq.png")
+      b.setAttribute('src', "images/bq.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "bQueen")
       b.setAttribute('move', 0)
@@ -555,7 +561,7 @@ let figures = {
   wKnight: {
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/wkn.png")
+      b.setAttribute('src', "images/wkn.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "wKnight")
       b.setAttribute('move', 0)
@@ -602,7 +608,7 @@ let figures = {
     
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/bkn.png")
+      b.setAttribute('src', "images/bkn.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "bKnight")
       b.setAttribute('move', 0)
@@ -648,7 +654,7 @@ let figures = {
   wKing: {
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/wk.png")
+      b.setAttribute('src', "images/wk.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "wKing")
       b.setAttribute('move', 0)
@@ -690,7 +696,7 @@ let figures = {
   bKing: {
     create: function(position){
       let b = document.createElement('img')
-      b.setAttribute('src', "images/bk.png")
+      b.setAttribute('src', "images/bk.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "bKing")
       b.setAttribute('move', 0)
@@ -890,6 +896,8 @@ windowRef.addEventListener('resize', function() {
 
   }
 });
+
+whosMove()
 
 
 
