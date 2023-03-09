@@ -79,9 +79,6 @@ function checkpossibleMoves(piece, PlacedWantedpos){
     for(let i = 0; i < everyPiece.length; i++){
       let comparingPiece = everyPiece[i].getAttribute("place")
       if((comparingPiece == theBlocksPlace)&&(theBlocksPlace != PlacedWantedpos.getAttribute("number"))){
-        //console.log(theBlocksPlace, PlacedWantedpos);
-        console.log("falsy");
-        //console.log(document.getElementById(`${startx}${starty}`).getAttribute("number") );
         return false        
       }
       if((comparingPiece == theBlocksPlace)&&((piece.getAttribute("color")==everyPiece[i].getAttribute("color"))||(!figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"))))){
@@ -853,10 +850,11 @@ function dragElement(elmnt) {
   if(figures.valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] , elmnt)){
       let next = placement(elmnt)
       let howmany = Number(elmnt.getAttribute("move"))
+      console.log(howmany);
       elmnt.style.left = nodeArray[next].offsetLeft + 'px'
       elmnt.style.top = nodeArray[next].offsetTop + 'px'
       elmnt.setAttribute("place", next)
-      elmnt.setAttribute("move", howmany++) 
+      elmnt.setAttribute("move", howmany+1) 
       HowManyMoves++
       upgrading()
       whosMove()
@@ -897,8 +895,9 @@ windowRef.addEventListener('resize', function() {
   }
 });
 
-whosMove()
 
+
+whosMove()
 
 
 //Future: 
