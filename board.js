@@ -112,10 +112,18 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 }
 
 
+function whosMove(){
+  if((HowManyMoves % 2 == 0)){
+    document.body.style.backgroundColor = "white";
+  }else{
+    document.body.style.backgroundColor = "DarkSlateGray";
+  }
+}
 
 //___________________________________________Main Figures_________________________
 
 let figures = {
+  
   valid: function(piece){
     let elementRect = piece.getBoundingClientRect()
     let divRect = board.getBoundingClientRect()
@@ -708,8 +716,8 @@ figures.wKnight.create(1)
 figures.wKnight.create(6)
 figures.wBishop.create(2)
 figures.wBishop.create(5)
-figures.wQueen.create(3)
-figures.wKing.create(4)
+figures.wQueen.create(4)
+figures.wKing.create(3)
 
 figures.bPawn.create(48)
 figures.bPawn.create(49)
@@ -813,7 +821,9 @@ function dragElement(elmnt) {
       elmnt.setAttribute("move", howmany+1) 
       HowManyMoves++
       upgrading()
+      whosMove()
     }else{
+      
       elmnt.style.top = nodeArray[pieceplacement].offsetTop + 'px'
       elmnt.style.left = nodeArray[pieceplacement].offsetLeft + 'px'
     }
