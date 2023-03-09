@@ -91,9 +91,40 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
   } 
   for(let i = 0; i < everyPiece.length; i++){
-    let comparingPiece = everyPiece[i].getAttribute("place")
+    let comparingPiece = Number(everyPiece[i].getAttribute("place"))
     let color = piece.getAttribute("color")
-      let othercolor = everyPiece[i].getAttribute("color")
+    let othercolor = everyPiece[i].getAttribute("color")
+
+    if(piece.getAttribute("pieceinfo")==("wKing")&&(piece.getAttribute("move")==0)&&(everyPiece[i].getAttribute("move")==0)){
+      console.log("castle");
+      console.log();
+      if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))+1))&&(everyPiece[i].getAttribute("pieceinfo")=="wRook")){
+         everyPiece[i].remove()
+         figures.wRook.create(comparingPiece-2)
+         return true
+      }
+      if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))-1))&&(everyPiece[i].getAttribute("pieceinfo")=="wRook")){
+        everyPiece[i].remove()
+        figures.wRook.create(comparingPiece+2)
+        return true
+     }
+    }
+
+    if(piece.getAttribute("pieceinfo")==("bKing")&&(piece.getAttribute("move")==0)&&(everyPiece[i].getAttribute("move")==0)){
+      console.log("castle");
+      console.log();
+      if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))+1))&&(everyPiece[i].getAttribute("pieceinfo")=="bRook")){
+         everyPiece[i].remove()
+         figures.bRook.create(comparingPiece-2)
+         return true
+      }
+      if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))-1))&&(everyPiece[i].getAttribute("pieceinfo")=="bRook")){
+        everyPiece[i].remove()
+        figures.bRook.create(comparingPiece+2)
+        return true
+     }
+    }
+
     if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor) ){
       everyPiece[i].remove()
       console.log("deleted");
@@ -114,9 +145,9 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
 function whosMove(){
   if((HowManyMoves % 2 == 0)){
-    document.body.style.backgroundColor = "white";
+    board.style.backgroundColor = "white";
   }else{
-    document.body.style.backgroundColor = "DarkSlateGray";
+    board.style.backgroundColor = "DarkSlateGray";
   }
 }
 
@@ -154,7 +185,7 @@ let figures = {
       //might have to give the wanted position the piece in question to check its color 
   
       let piecepos = Number(piece.getAttribute("place"))
-      if(((piecepos+7 == placedwanted) || (piecepos+9 == placedwanted))){
+      if(((piecepos-7 == placedwanted) || (piecepos-9 == placedwanted))){
         return true
       }else{
         return false
@@ -165,7 +196,7 @@ let figures = {
     move: function(element, Placedwanted){
       //make sure you run the placement function for the placedwanted argument 
       currentposition = Number(element.getAttribute("place"))
-      if((((currentposition + 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)))){ 
+      if((((currentposition - 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition - 16)  == Placedwanted)))){ 
         return true
       }else{
         return false
@@ -202,7 +233,7 @@ let figures = {
       //might have to give the wanted position the piece in question to check its color 
 
       let piecepos = Number(piece.getAttribute("place"))
-      if((((piecepos-7 )== placedwanted) || ((piecepos-9) == placedwanted))){
+      if((((piecepos+7 )== placedwanted) || ((piecepos+9) == placedwanted))){
         return true
       }else{
         return false
@@ -214,7 +245,7 @@ let figures = {
       //make sure you run the placement function for the placedwanted argument 
       currentposition = Number(element.getAttribute("place"))
       //doesn't work for taking but works for collision ?????
-      if((((currentposition - 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition - 16)  == Placedwanted)))){
+      if((((currentposition + 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)))){
         return true
       }else{
         console.log(element, Placedwanted);
@@ -702,40 +733,40 @@ let figures = {
   }
   
 
-figures.wPawn.create(8)
-figures.wPawn.create(9)
-figures.wPawn.create(10)
-figures.wPawn.create(11)
-figures.wPawn.create(12)
-figures.wPawn.create(13)
-figures.wPawn.create(14)
-figures.wPawn.create(15)
-figures.wRook.create(0)
-figures.wRook.create(7)
-figures.wKnight.create(1)
-figures.wKnight.create(6)
-figures.wBishop.create(2)
-figures.wBishop.create(5)
-figures.wQueen.create(4)
-figures.wKing.create(3)
+figures.bPawn.create(8)
+figures.bPawn.create(9)
+figures.bPawn.create(10)
+figures.bPawn.create(11)
+figures.bPawn.create(12)
+figures.bPawn.create(13)
+figures.bPawn.create(14)
+figures.bPawn.create(15)
+figures.bRook.create(0)
+figures.bRook.create(7)
+figures.bKnight.create(1)
+figures.bKnight.create(6)
+figures.bBishop.create(2)
+figures.bBishop.create(5)
+figures.bQueen.create(4)
+figures.bKing.create(3)
 
-figures.bPawn.create(48)
-figures.bPawn.create(49)
-figures.bPawn.create(50)
-figures.bPawn.create(51)
-figures.bPawn.create(52)
-figures.bPawn.create(53)
-figures.bPawn.create(54)
-figures.bPawn.create(55)
-figures.bRook.create(63)
-figures.bRook.create(56)
+figures.wPawn.create(48)
+figures.wPawn.create(49)
+figures.wPawn.create(50)
+figures.wPawn.create(51)
+figures.wPawn.create(52)
+figures.wPawn.create(53)
+figures.wPawn.create(54)
+figures.wPawn.create(55)
+figures.wRook.create(63)
+figures.wRook.create(56)
 
-figures.bKnight.create(57)
-figures.bKnight.create(62)
-figures.bBishop.create(58)
-figures.bBishop.create(61)
-figures.bQueen.create(60)
-figures.bKing.create(59)
+figures.wKnight.create(57)
+figures.wKnight.create(62)
+figures.wBishop.create(58)
+figures.wBishop.create(61)
+figures.wQueen.create(60)
+figures.wKing.create(59)
 
 
 function placement(pos){
@@ -794,6 +825,7 @@ function dragElement(elmnt) {
     elmnt.style.zIndex = "100"
     document.onmouseup = closeDragElement;
     document.onmousemove = elementDrag;
+    board.classList.add("should-display-border")
   }
 
   function elementDrag(e) {
@@ -818,7 +850,7 @@ function dragElement(elmnt) {
       elmnt.style.left = nodeArray[next].offsetLeft + 'px'
       elmnt.style.top = nodeArray[next].offsetTop + 'px'
       elmnt.setAttribute("place", next)
-      elmnt.setAttribute("move", howmany+1) 
+      elmnt.setAttribute("move", howmany++) 
       HowManyMoves++
       upgrading()
       whosMove()
@@ -831,7 +863,7 @@ function dragElement(elmnt) {
     document.onmouseup = null;
     document.onmousemove = null;
     elmnt.style.zIndex = "10"
-    
+    board.classList.remove("should-display-border")
     
   }
 }
