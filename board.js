@@ -99,14 +99,14 @@ function checkpossibleMoves(piece, PlacedWantedpos){
     
       if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))+1))&&(everyPiece[i].getAttribute("pieceinfo")=="wRook")){
         everyPiece[i].remove()
-        piece.remove()
-        figures.wKing.create(comparingPiece-2)
-        figures.wRook.create(comparingPiece-3)
+        figures.wRook.create(comparingPiece-2)
         return true
      }
       if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))-1))&&(everyPiece[i].getAttribute("pieceinfo")=="wRook")){
         everyPiece[i].remove()
-        figures.wRook.create(comparingPiece+2)
+        piece.remove()
+        figures.wKing.create(comparingPiece+2)
+        figures.wRook.create(comparingPiece+3)
         return true
      }
     }
@@ -115,15 +115,15 @@ function checkpossibleMoves(piece, PlacedWantedpos){
       console.log("castle");
 
       if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))+1))&&(everyPiece[i].getAttribute("pieceinfo")=="bRook")){
-         everyPiece[i].remove()
-         piece.remove()
-         figures.bKing.create(comparingPiece-2)
-         figures.bRook.create(comparingPiece-3)
-         return true
+        everyPiece[i].remove()
+        figures.bRook.create(comparingPiece-2)
+        return true
       }
       if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))-1))&&(everyPiece[i].getAttribute("pieceinfo")=="bRook")){
         everyPiece[i].remove()
-        figures.bRook.create(comparingPiece+2)
+        piece.remove()
+        figures.bKing.create(comparingPiece+2)
+        figures.bRook.create(comparingPiece+3)
         return true
      }
     }
