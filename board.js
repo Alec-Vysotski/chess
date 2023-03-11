@@ -4,6 +4,7 @@ let nodeArray = []
 let howmany = 0
 let HowManyMoves = 0
 
+
 for (let i = 0; i < 8; i++) {
   for (let j = 0; j < 8; j++) {
     let square = document.createElement("div");
@@ -19,7 +20,7 @@ for (let i = 0; i < 8; i++) {
   }
 }
 
-
+whosMove()
 //_______________________________________Initialization complete________________________________
 function checkpossibleMoves(piece, PlacedWantedpos){
 
@@ -28,7 +29,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
   if(piece.getAttribute("place")==(PlacedWantedpos.getAttribute("number"))){
     return false
   }
-  console.log(PlacedWantedpos);
+ 
   if((piece.getAttribute("color") == "w") && (HowManyMoves % 2 != 0)){
     return false
   }
@@ -74,7 +75,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
     }
 
     let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") 
-    console.log(document.getElementById(`${startx}${starty}`));
+
     
     for(let i = 0; i < everyPiece.length; i++){
       let comparingPiece = everyPiece[i].getAttribute("place")
@@ -95,12 +96,14 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
     if(piece.getAttribute("pieceinfo")==("wKing")&&(piece.getAttribute("move")==0)&&(everyPiece[i].getAttribute("move")==0)){
       console.log("castle");
-      console.log();
+    
       if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))+1))&&(everyPiece[i].getAttribute("pieceinfo")=="wRook")){
-         everyPiece[i].remove()
-         figures.wRook.create(comparingPiece-2)
-         return true
-      }
+        everyPiece[i].remove()
+        piece.remove()
+        figures.wKing.create(comparingPiece-2)
+        figures.wRook.create(comparingPiece-3)
+        return true
+     }
       if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))-1))&&(everyPiece[i].getAttribute("pieceinfo")=="wRook")){
         everyPiece[i].remove()
         figures.wRook.create(comparingPiece+2)
@@ -110,10 +113,12 @@ function checkpossibleMoves(piece, PlacedWantedpos){
 
     if(piece.getAttribute("pieceinfo")==("bKing")&&(piece.getAttribute("move")==0)&&(everyPiece[i].getAttribute("move")==0)){
       console.log("castle");
-      console.log();
+
       if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))+1))&&(everyPiece[i].getAttribute("pieceinfo")=="bRook")){
          everyPiece[i].remove()
-         figures.bRook.create(comparingPiece-2)
+         piece.remove()
+         figures.bKing.create(comparingPiece-2)
+         figures.bRook.create(comparingPiece-3)
          return true
       }
       if((comparingPiece == (Number(PlacedWantedpos.getAttribute("number"))-1))&&(everyPiece[i].getAttribute("pieceinfo")=="bRook")){
@@ -123,18 +128,17 @@ function checkpossibleMoves(piece, PlacedWantedpos){
      }
     }
 
+
     if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor) ){
       everyPiece[i].remove()
       console.log("deleted");
       return true 
     }}
-
+    
   if(figures[piece.getAttribute("pieceinfo")].move(piece, PlacedWantedpos.getAttribute("number")) == false){
     ("not happening")
     return false
   }
-  
-
 
   return true
 
@@ -149,11 +153,227 @@ function whosMove(){
   }
 }
 
-function checkingChecks(){
-  /*
 
-  */
-}
+function checkpossibleMovesNoTaking(piece, PlacedWantedpos){
+
+  piecePlace = nodeArray[piece.getAttribute("place")].getAttribute("id")
+
+  // if((piece.getAttribute("place")==(PlacedWantedpos.getAttribute("number")))){
+  //   return false
+  // }
+ 
+  // if((piece.getAttribute("color") == "w") && (HowManyMoves % 2 != 0)){
+  //   //console.log("color");
+  //   return false
+  // }
+
+  // if((piece.getAttribute("color") == "b") && (HowManyMoves % 2 == 0)){
+  //   return false
+  // }
+
+  let startx = piecePlace.slice(0,1) 
+  let starty = piecePlace.slice(1,2)
+
+
+  let finishx = PlacedWantedpos.id.slice(0,1)
+  let finishy = PlacedWantedpos.id.slice(1,2)
+
+  let everyPiece = document.querySelectorAll(".piece")
+  let goingBackwardsY = starty > finishy
+  let goingBackwardsX = startx > finishx 
+
+  let row = Math.abs(startx - finishx)
+  let rowy = Math.abs(starty - finishy);
+  let biggest = Math.max(row,rowy)
+
+  for(let h = 0; h < biggest; h++){
+    if((rowy > 0 ) && (!goingBackwardsY)){
+      starty++ 
+      rowy--
+    }
+
+    if((row > 0) &&(!goingBackwardsX)){
+      startx++
+      row--
+    }
+
+    if((rowy > 0)&& (goingBackwardsY)){
+      starty--
+      rowy--
+    } 
+    if((row > 0)&&(goingBackwardsX)){
+      startx--
+      row--
+    }
+    
+    
+    let theBlocksPlace = document.getElementById(`${startx}${starty}`).getAttribute("number") 
+  
+    
+    for(let i = 0; i < everyPiece.length; i++){
+      let color = piece.getAttribute("color")
+      let othercolor = everyPiece[i].getAttribute("color")
+      let comparingPiece = everyPiece[i].getAttribute("place")
+
+      if(((piece.getAttribute("pieceinfo")=="wPawn")||(piece.getAttribute("pieceinfo")=="bPawn"))&&(everyPiece[i].getAttribute("place")==PlacedWantedpos.getAttribute("number"))&&(figures[piece.getAttribute("pieceinfo")].take(piece, everyPiece[i].getAttribute("place")))&&(color != othercolor)){
+
+        console.log("take with the pawn");
+        return true
+      }
+      if((comparingPiece == theBlocksPlace)&&(theBlocksPlace != PlacedWantedpos.getAttribute("number"))){
+        console.log();
+        return false        
+      }
+      if((comparingPiece == theBlocksPlace)&&((piece.getAttribute("color")==everyPiece[i].getAttribute("color"))||(!figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"))))){
+        console.log("bro is testing friendly fire");
+        return false
+      }
+    } 
+    for(let i = 0; i < everyPiece.length; i++){
+      let comparingPiece = everyPiece[i].getAttribute("place")
+      let color = piece.getAttribute("color")
+      let othercolor = everyPiece[i].getAttribute("color")
+  
+      if(figures[piece.getAttribute("pieceinfo")].move(piece, PlacedWantedpos.getAttribute("number")) == false){
+        ("not happening")
+        return false
+      }
+      
+      if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor) ){
+        //console.log(everyPiece[i]);
+        console.log("can take");
+        return true 
+        //doesn't work
+        }
+
+        
+      }
+    }
+  return true
+
+  } 
+  
+
+
+  
+
+
+function whiteCheckingChecks(){
+  console.log("checking...");
+  let King = Number(document.getElementById("white-king").getAttribute("place"))
+  let theKingPos = nodeArray[King]
+  let everyPiece = document.querySelectorAll(".piece")
+  for(let i = 0; i < everyPiece.length; i++){
+    if((everyPiece[i].getAttribute("color")!="w")){
+      console.log("not white");
+      if(checkpossibleMovesNoTaking(everyPiece[i], theKingPos)){
+        return everyPiece[i]
+      }
+    }
+  }
+
+  return false
+
+
+  }
+  //return an array of all the pieces that can take
+
+  
+
+  function whiteCheckMate(){
+    console.log("checkmate called...");
+    //let theKing = document.getElementById("white-king")
+    let theKingPos = Number(document.getElementById("white-king").getAttribute("place"))
+    let theKingsPos = nodeArray[theKingPos].getAttribute("id")
+    let everyPiece = document.querySelectorAll(".piece")
+    let takingPiece = whiteCheckingChecks().getAttribute("place")
+    let KingPossibleMoves = [theKingPos+8, theKingPos+9,theKingPos+7,theKingPos+1,theKingPos-1,theKingPos-8,theKingPos-7,theKingPos-9,]
+    let takingSquare = nodeArray[takingPiece].getAttribute("id")
+    //let canTheKingMove = false
+
+    let startx = takingSquare.slice(0,1) 
+    let starty = takingSquare.slice(1,2)
+
+
+    let finishx = theKingsPos.slice(0,1)
+    let finishy = theKingsPos.slice(1,2)
+
+    let goingBackwardsY = starty > finishy
+    let goingBackwardsX = startx > finishx 
+  
+    let row = Math.abs(startx - finishx)
+    let rowy = Math.abs(starty - finishy);
+    let biggest = Math.max(row,rowy)
+  
+    for(let h = 0; h < biggest; h++){
+    
+    let theBlocksPlace = document.getElementById(`${startx}${starty}`)
+    //console.log(theBlocksPlace);
+    for(let i = 0; i < everyPiece.length; i++){
+     
+
+      if((everyPiece[i].getAttribute("pieceinfo")!="wKing")&&(everyPiece[i].getAttribute("color")=='w')&&(checkpossibleMovesNoTaking(everyPiece[i], theBlocksPlace))){
+        console.log(everyPiece[i])
+        console.log("blockable");
+        return false 
+      }
+      if(everyPiece[i].getAttribute("pieceinfo")=="wPawn"){
+      }
+      if((everyPiece[i].getAttribute("pieceinfo")=="wPawn")&&(checkpossibleMovesNoTaking(everyPiece[i], theBlocksPlace))){
+        console.log("take with pawn");
+        return false
+        //this doesn't work
+      }
+      for(let k = 0; k < KingPossibleMoves.length; k++){
+        let KingPos = Number(KingPossibleMoves[k])
+        //console.log(KingPos);
+          if((KingPos > 64)){
+            KingPossibleMoves.splice(k, 1)
+          }
+          if((KingPos < 64)&&(checkpossibleMovesNoTaking(everyPiece[i], nodeArray[KingPos]))){
+            KingPossibleMoves.splice(k, 1)
+          }
+          if(KingPossibleMoves[k]==everyPiece[i].getAttribute("place")){
+            KingPossibleMoves.splice(k,1)
+          }
+        }
+      }
+      if((rowy > 0 ) && (!goingBackwardsY)){
+        starty++ 
+        rowy--
+      }
+  
+      if((row > 0) &&(!goingBackwardsX)){
+        startx++
+        row--
+      }
+  
+      if((rowy > 0)&& (goingBackwardsY)){
+        starty--
+        rowy--
+      } 
+      if((row > 0)&&(goingBackwardsX)){
+        startx--
+        row--
+      }
+
+    }
+    
+    if(KingPossibleMoves.length == 0){
+      alert("this is check mate");
+      return true
+    }else{
+      console.log("the king can move");
+      console.log(KingPossibleMoves);
+      return false
+    }
+  }
+
+
+
+
+
+
 
 //___________________________________________Main Figures_________________________
 
@@ -185,7 +405,7 @@ let figures = {
       dragElement(b)
     },
 
-    take: function(piece, placedwanted,){
+    take: function(piece, placedwanted){
       //might have to give the wanted position the piece in question to check its color 
   
       let piecepos = Number(piece.getAttribute("place"))
@@ -251,7 +471,7 @@ let figures = {
       if((((currentposition + 8)  == Placedwanted)||((parseInt(element.getAttribute("move")) == 0) && ((currentposition + 16)  == Placedwanted)))){
         return true
       }else{
-        console.log(element, Placedwanted);
+
         return false
       }
     },
@@ -288,7 +508,7 @@ let figures = {
       
       let piecePlaces = nodeArray[element.getAttribute("place")].getAttribute("id")
       let PlacedWantedpos = nodeArray[Placedwanted].getAttribute("id")
-      console.log(PlacedWantedpos);
+     
 
 
       let startx = piecePlaces.slice(0,1) 
@@ -337,7 +557,7 @@ let figures = {
       
       let piecePlaces = nodeArray[element.getAttribute("place")].getAttribute("id")
       let PlacedWantedpos = nodeArray[Placedwanted].getAttribute("id")
-      console.log(PlacedWantedpos);
+  
 
 
       let startx = piecePlaces.slice(0,1) 
@@ -384,7 +604,7 @@ let figures = {
       
       let piecePlaces = nodeArray[element.getAttribute("place")].getAttribute("id")
       let PlacedWantedpos = nodeArray[Placedwanted].getAttribute("id")
-      console.log(PlacedWantedpos);
+
 
 
       let startx = piecePlaces.slice(0,1) 
@@ -431,7 +651,7 @@ let figures = {
       
       let piecePlaces = nodeArray[element.getAttribute("place")].getAttribute("id")
       let PlacedWantedpos = nodeArray[Placedwanted].getAttribute("id")
-      console.log(PlacedWantedpos);
+  
 
 
       let startx = piecePlaces.slice(0,1) 
@@ -478,7 +698,7 @@ let figures = {
       
       let piecePlaces = nodeArray[element.getAttribute("place")].getAttribute("id")
       let PlacedWantedpos = nodeArray[Placedwanted].getAttribute("id")
-      console.log(PlacedWantedpos);
+
 
 
       let startx = piecePlaces.slice(0,1) 
@@ -527,7 +747,7 @@ let figures = {
       
       let piecePlaces = nodeArray[element.getAttribute("place")].getAttribute("id")
       let PlacedWantedpos = nodeArray[Placedwanted].getAttribute("id")
-      console.log(PlacedWantedpos);
+
 
 
       let startx = piecePlaces.slice(0,1) 
@@ -651,6 +871,7 @@ let figures = {
   wKing: {
     create: function(position){
       let b = document.createElement('img')
+      b.setAttribute('id', 'white-king')
       b.setAttribute('src', "images/wk.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "wKing")
@@ -693,6 +914,7 @@ let figures = {
   bKing: {
     create: function(position){
       let b = document.createElement('img')
+      b.setAttribute('id', 'black-king')
       b.setAttribute('src', "images/bk.svg")
       b.setAttribute('class', 'piece')
       b.setAttribute('pieceinfo', "bKing")
@@ -750,8 +972,8 @@ figures.bKnight.create(1)
 figures.bKnight.create(6)
 figures.bBishop.create(2)
 figures.bBishop.create(5)
-figures.bQueen.create(4)
-figures.bKing.create(3)
+figures.bQueen.create(3)
+figures.bKing.create(4)
 
 figures.wPawn.create(48)
 figures.wPawn.create(49)
@@ -768,8 +990,8 @@ figures.wKnight.create(57)
 figures.wKnight.create(62)
 figures.wBishop.create(58)
 figures.wBishop.create(61)
-figures.wQueen.create(60)
-figures.wKing.create(59)
+figures.wQueen.create(59)
+figures.wKing.create(60)
 
 
 function placement(pos){
@@ -850,7 +1072,7 @@ function dragElement(elmnt) {
   if(figures.valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] , elmnt)){
       let next = placement(elmnt)
       let howmany = Number(elmnt.getAttribute("move"))
-      console.log(howmany);
+      //console.log(howmany);
       elmnt.style.left = nodeArray[next].offsetLeft + 'px'
       elmnt.style.top = nodeArray[next].offsetTop + 'px'
       elmnt.setAttribute("place", next)
@@ -858,6 +1080,10 @@ function dragElement(elmnt) {
       HowManyMoves++
       upgrading()
       whosMove()
+      if(whiteCheckingChecks() != false){
+        whiteCheckMate()
+      }
+  
     }else{
       
       elmnt.style.top = nodeArray[pieceplacement].offsetTop + 'px'
@@ -869,8 +1095,10 @@ function dragElement(elmnt) {
     elmnt.style.zIndex = "10"
     board.classList.remove("should-display-border")
     
+  
   }
 }
+
 
 
 //_________________________________window logic___________________________________________
@@ -897,8 +1125,9 @@ windowRef.addEventListener('resize', function() {
 
 
 
-whosMove()
 
 
-//Future: 
-//create rules for check, checkmate and draws(when repeating moves)
+//What I am working on right now:
+//check and checkmates work but the checking for check used the move function
+//I changed that to the new function I created and now nothing works and 
+//friendly fire gets called for no reason 
