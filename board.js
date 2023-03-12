@@ -214,6 +214,7 @@ function checkpossibleMovesNoTaking(piece, PlacedWantedpos){
   if(piece.getAttribute("place")==(PlacedWantedpos.getAttribute("number"))){
     return false
   }
+
   piecePlace = nodeArray[piece.getAttribute("place")].getAttribute("id")
 
 
@@ -275,6 +276,7 @@ function checkpossibleMovesNoTaking(piece, PlacedWantedpos){
         return true
       }
     } 
+
     // for(let i = 0; i < everyPiece.length; i++){
     //   let comparingPiece = everyPiece[i].getAttribute("place")
     //   let color = piece.getAttribute("color")
@@ -381,10 +383,10 @@ function whiteCheckingChecks(){
       }
       for(let k = 0; k < KingPossibleMoves.length; k++){
         let KingPos = Number(KingPossibleMoves[k])
-          if((KingPos > 64)){
+          if((KingPos < 64)||(KingPos > 0)){
             KingPossibleMoves.splice(k, 1)
           }
-          if((KingPos < 64)&&(checkpossibleMovesNoTaking(everyPiece[i], nodeArray[KingPos]))){
+          if((KingPos < 64)&&(KingPos > 0)&&(checkpossibleMovesNoTaking(everyPiece[i], nodeArray[KingPos]))){
             KingPossibleMoves.splice(k, 1)
           }
           if(KingPossibleMoves[k]==everyPiece[i].getAttribute("place")){
@@ -414,7 +416,7 @@ function whiteCheckingChecks(){
     }
     
     if((KingPossibleMoves.length == 0)&&(possibleMoves.length == 0)){
-      alert("this is check mate");
+      alert("white check mate");
       return true
     }else{
       console.log("the king can move");
@@ -436,8 +438,7 @@ function whiteCheckingChecks(){
     let KingPossibleMoves = [theKingPos+8, theKingPos+9,theKingPos+7,theKingPos+1,theKingPos-1,theKingPos-8,theKingPos-7,theKingPos-9,]
     let takingSquare = nodeArray[takingPiece].getAttribute("id")
     let possibleMoves = []
-    //let possiblePieces = [] 
-    //let canTheKingMove = false
+
 
     let startx = takingSquare.slice(0,1) 
     let starty = takingSquare.slice(1,2)
@@ -495,12 +496,12 @@ function whiteCheckingChecks(){
       }
       for(let k = 0; k < KingPossibleMoves.length; k++){
         let KingPos = Number(KingPossibleMoves[k])
-          if((KingPos > 64)){
+          if((KingPos < 64)||(KingPos > 0)){
             KingPossibleMoves.splice(k, 1)
           }
           
-          console.log(everyPiece[n]);
-          if((KingPos < 64)&&(checkpossibleMovesNoTaking(everyPiece[n], nodeArray[KingPos]))){
+          console.log(KingPos);
+          if(((KingPos < 64)&&(KingPos > 0))&&(checkpossibleMovesNoTaking(everyPiece[n], nodeArray[Number(KingPos)]))){
             KingPossibleMoves.splice(k, 1)
           }
           
@@ -512,7 +513,7 @@ function whiteCheckingChecks(){
       
     
     if((KingPossibleMoves.length == 0)&&(possibleMoves.length == 0)){
-      alert("this is check mate");
+      alert("black check mate");
       return true
     }else{
       console.log("the king can move");
@@ -1229,6 +1230,9 @@ function dragElement(elmnt) {
       
       if(whiteCheckingChecks()!= false){
         whiteCheckMate()
+      }
+      if(blackCheckingChecks()){
+        blackCheckMate()
       }
       upgrading()
       whosMove()
