@@ -23,6 +23,54 @@ for (let i = 0; i < 8; i++) {
 whosMove()
 //_______________________________________Initialization complete________________________________
 function checkpossibleMoves(piece, PlacedWantedpos){
+  let everyPiece = document.querySelectorAll(".piece")
+  if(whiteCheckingChecks() != false){
+    console.log("in check");
+    
+    arr = Array.from(whiteCheckMate())
+    console.log(typeof arr);
+    if(arr.includes(piece)&&(arr.includes(PlacedWantedpos))){
+      console.log("right move");
+      for(let i = 0; i < everyPiece.length; i++){
+        let comparingPiece = Number(everyPiece[i].getAttribute("place"))
+        let color = piece.getAttribute("color")
+        let othercolor = everyPiece[i].getAttribute("color")
+        if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor) ){
+          everyPiece[i].remove()
+          console.log("deleted");
+          return true 
+      }}
+      
+      return true
+    }else{
+      console.log("not the rigth move");
+      return false
+    }
+  }
+
+  if(blackCheckingChecks() != false){
+    console.log("in check");
+    
+    arr = Array.from(blackCheckMate())
+    console.log(typeof arr);
+    if(arr.includes(piece)&&(arr.includes(PlacedWantedpos))){
+      console.log("right move");
+      for(let i = 0; i < everyPiece.length; i++){
+        let comparingPiece = Number(everyPiece[i].getAttribute("place"))
+        let color = piece.getAttribute("color")
+        let othercolor = everyPiece[i].getAttribute("color")
+        if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor) ){
+          everyPiece[i].remove()
+          console.log("deleted");
+          return true 
+      }}
+      
+      return true
+    }else{
+      console.log("not the rigth move");
+      return false
+    }
+  }
 
   piecePlace = nodeArray[piece.getAttribute("place")].getAttribute("id")
 
@@ -31,12 +79,19 @@ function checkpossibleMoves(piece, PlacedWantedpos){
   }
  
   if((piece.getAttribute("color") == "w") && (HowManyMoves % 2 != 0)){
+    console.log(HowManyMoves);
     return false
   }
 
   if((piece.getAttribute("color") == "b") && (HowManyMoves % 2 == 0)){
+    console.log(HowManyMoves);
     return false
   }
+
+  
+  console.log("got past the check");
+  
+  //running this makes my code not run 
 
   let startx = piecePlace.slice(0,1) 
   let starty = piecePlace.slice(1,2)
@@ -45,7 +100,7 @@ function checkpossibleMoves(piece, PlacedWantedpos){
   let finishx = PlacedWantedpos.id.slice(0,1)
   let finishy = PlacedWantedpos.id.slice(1,2)
 
-  let everyPiece = document.querySelectorAll(".piece")
+  
   let goingBackwardsY = starty > finishy
   let goingBackwardsX = startx > finishx 
 
@@ -156,20 +211,11 @@ function whosMove(){
 
 function checkpossibleMovesNoTaking(piece, PlacedWantedpos){
 
+  if(piece.getAttribute("place")==(PlacedWantedpos.getAttribute("number"))){
+    return false
+  }
   piecePlace = nodeArray[piece.getAttribute("place")].getAttribute("id")
 
-  // if((piece.getAttribute("place")==(PlacedWantedpos.getAttribute("number")))){
-  //   return false
-  // }
- 
-  // if((piece.getAttribute("color") == "w") && (HowManyMoves % 2 != 0)){
-  //   //console.log("color");
-  //   return false
-  // }
-
-  // if((piece.getAttribute("color") == "b") && (HowManyMoves % 2 == 0)){
-  //   return false
-  // }
 
   let startx = piecePlace.slice(0,1) 
   let starty = piecePlace.slice(1,2)
@@ -187,6 +233,7 @@ function checkpossibleMovesNoTaking(piece, PlacedWantedpos){
   let biggest = Math.max(row,rowy)
 
   for(let h = 0; h < biggest; h++){
+
     if((rowy > 0 ) && (!goingBackwardsY)){
       starty++ 
       rowy--
@@ -215,38 +262,34 @@ function checkpossibleMovesNoTaking(piece, PlacedWantedpos){
       let othercolor = everyPiece[i].getAttribute("color")
       let comparingPiece = everyPiece[i].getAttribute("place")
 
-      if(((piece.getAttribute("pieceinfo")=="wPawn")||(piece.getAttribute("pieceinfo")=="bPawn"))&&(everyPiece[i].getAttribute("place")==PlacedWantedpos.getAttribute("number"))&&(figures[piece.getAttribute("pieceinfo")].take(piece, everyPiece[i].getAttribute("place")))&&(color != othercolor)){
-
-        console.log("take with the pawn");
-        return true
-      }
+      
       if((comparingPiece == theBlocksPlace)&&(theBlocksPlace != PlacedWantedpos.getAttribute("number"))){
-        console.log();
-        return false        
+        return false 
       }
       if((comparingPiece == theBlocksPlace)&&((piece.getAttribute("color")==everyPiece[i].getAttribute("color"))||(!figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number"))))){
         console.log("bro is testing friendly fire");
         return false
       }
+      if((((piece.getAttribute("pieceinfo")=="wPawn")&&(HowManyMoves % 2 == 0))||((piece.getAttribute("pieceinfo")=="bPawn")&&(HowManyMoves % 2 != 0)))&&(everyPiece[i].getAttribute("place")==PlacedWantedpos.getAttribute("number"))&&(figures[piece.getAttribute("pieceinfo")].take(piece, everyPiece[i].getAttribute("place")))&&(color != othercolor)){
+        console.log("take with the pawn");
+        return true
+      }
     } 
-    for(let i = 0; i < everyPiece.length; i++){
-      let comparingPiece = everyPiece[i].getAttribute("place")
-      let color = piece.getAttribute("color")
-      let othercolor = everyPiece[i].getAttribute("color")
-  
+    // for(let i = 0; i < everyPiece.length; i++){
+    //   let comparingPiece = everyPiece[i].getAttribute("place")
+    //   let color = piece.getAttribute("color")
+    //   let othercolor = everyPiece[i].getAttribute("color")
+      
+    //   if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor) ){
+    //     console.log("can take");
+    //     return true 
+    //     }
+        
+    //   }
+    //don't know what this code does
       if(figures[piece.getAttribute("pieceinfo")].move(piece, PlacedWantedpos.getAttribute("number")) == false){
         ("not happening")
         return false
-      }
-      
-      if((comparingPiece == PlacedWantedpos.getAttribute("number")) && (figures[piece.getAttribute("pieceinfo")].take(piece, PlacedWantedpos.getAttribute("number")))&&(color != othercolor) ){
-        //console.log(everyPiece[i]);
-        console.log("can take");
-        return true 
-        //doesn't work
-        }
-
-        
       }
     }
   return true
@@ -264,19 +307,29 @@ function whiteCheckingChecks(){
   let theKingPos = nodeArray[King]
   let everyPiece = document.querySelectorAll(".piece")
   for(let i = 0; i < everyPiece.length; i++){
-    if((everyPiece[i].getAttribute("color")!="w")){
-      console.log("not white");
-      if(checkpossibleMovesNoTaking(everyPiece[i], theKingPos)){
+    if((everyPiece[i].getAttribute("color")!="w")&&(checkpossibleMovesNoTaking(everyPiece[i], theKingPos))){
+        console.log("in check");
         return everyPiece[i]
       }
     }
+    return false
   }
 
-  return false
+  function blackCheckingChecks(){
+    console.log("checking...");
+    let King = Number(document.getElementById("black-king").getAttribute("place"))
+    let theKingPos = nodeArray[King]
+    let everyPiece = document.querySelectorAll(".piece")
+    for(let i = 0; i < everyPiece.length; i++){
+      if((everyPiece[i].getAttribute("color")!="b")&&(checkpossibleMovesNoTaking(everyPiece[i], theKingPos))){
+          console.log("in check");
+          return everyPiece[i]
+        }
+      }
+      return false
+    }
 
-
-  }
-  //return an array of all the pieces that can take
+    //white check works but black doesn't 
 
   
 
@@ -289,6 +342,8 @@ function whiteCheckingChecks(){
     let takingPiece = whiteCheckingChecks().getAttribute("place")
     let KingPossibleMoves = [theKingPos+8, theKingPos+9,theKingPos+7,theKingPos+1,theKingPos-1,theKingPos-8,theKingPos-7,theKingPos-9,]
     let takingSquare = nodeArray[takingPiece].getAttribute("id")
+    let possibleMoves = []
+    //let possiblePieces = [] 
     //let canTheKingMove = false
 
     let startx = takingSquare.slice(0,1) 
@@ -315,18 +370,17 @@ function whiteCheckingChecks(){
       if((everyPiece[i].getAttribute("pieceinfo")!="wKing")&&(everyPiece[i].getAttribute("color")=='w')&&(checkpossibleMovesNoTaking(everyPiece[i], theBlocksPlace))){
         console.log(everyPiece[i])
         console.log("blockable");
-        return false 
+        possibleMoves.push(everyPiece[i], theBlocksPlace)
+       
       }
-      if(everyPiece[i].getAttribute("pieceinfo")=="wPawn"){
-      }
+     
       if((everyPiece[i].getAttribute("pieceinfo")=="wPawn")&&(checkpossibleMovesNoTaking(everyPiece[i], theBlocksPlace))){
         console.log("take with pawn");
-        return false
-        //this doesn't work
+        possibleMoves.push(everyPiece[i], theBlocksPlace)
+      
       }
       for(let k = 0; k < KingPossibleMoves.length; k++){
         let KingPos = Number(KingPossibleMoves[k])
-        //console.log(KingPos);
           if((KingPos > 64)){
             KingPossibleMoves.splice(k, 1)
           }
@@ -359,20 +413,113 @@ function whiteCheckingChecks(){
 
     }
     
-    if(KingPossibleMoves.length == 0){
+    if((KingPossibleMoves.length == 0)&&(possibleMoves.length == 0)){
       alert("this is check mate");
       return true
     }else{
       console.log("the king can move");
       console.log(KingPossibleMoves);
-      return false
+      return possibleMoves
     }
   }
 
 
 
 
+  function blackCheckMate(){
+    console.log("checkmate called...");
+    //let theKing = document.getElementById("white-king")
+    let theKingPos = Number(document.getElementById("black-king").getAttribute("place"))
+    let theKingsPos = nodeArray[theKingPos].getAttribute("id")
+    let everyPiece = document.querySelectorAll(".piece")
+    let takingPiece = blackCheckingChecks().getAttribute("place")
+    let KingPossibleMoves = [theKingPos+8, theKingPos+9,theKingPos+7,theKingPos+1,theKingPos-1,theKingPos-8,theKingPos-7,theKingPos-9,]
+    let takingSquare = nodeArray[takingPiece].getAttribute("id")
+    let possibleMoves = []
+    //let possiblePieces = [] 
+    //let canTheKingMove = false
 
+    let startx = takingSquare.slice(0,1) 
+    let starty = takingSquare.slice(1,2)
+
+
+    let finishx = theKingsPos.slice(0,1)
+    let finishy = theKingsPos.slice(1,2)
+
+    let goingBackwardsY = starty > finishy
+    let goingBackwardsX = startx > finishx 
+  
+    let row = Math.abs(startx - finishx)
+    let rowy = Math.abs(starty - finishy);
+    let biggest = Math.max(row,rowy)
+  
+    for(let j = 0; j < biggest; j++){
+
+      if((rowy > 0 ) && (!goingBackwardsY)){
+        starty++ 
+        rowy--
+      }
+  
+      if((row > 0) &&(!goingBackwardsX)){
+        startx++
+        row--
+      }
+  
+      if((rowy > 0)&& (goingBackwardsY)){
+        starty--
+        rowy--
+      } 
+      if((row > 0)&&(goingBackwardsX)){
+        startx--
+        row--
+      }
+
+    }
+    
+    let theBlocksPlace = document.getElementById(`${startx}${starty}`)
+    console.log(theBlocksPlace);
+    for(let n = 0; n < everyPiece.length; n++){
+     
+
+      if((everyPiece[n].getAttribute("pieceinfo")!="bKing")&&(everyPiece[n].getAttribute("color")=='b')&&(checkpossibleMovesNoTaking(everyPiece[n], theBlocksPlace))){
+        console.log(everyPiece[n])
+        console.log("blockable");
+        possibleMoves.push(everyPiece[n], theBlocksPlace)
+       
+      }
+     
+      if((everyPiece[n].getAttribute("pieceinfo")=="bPawn")&&(checkpossibleMovesNoTaking(everyPiece[n], theBlocksPlace))){
+        console.log("take with pawn");
+        possibleMoves.push(everyPiece[n], theBlocksPlace)
+      
+      }
+      for(let k = 0; k < KingPossibleMoves.length; k++){
+        let KingPos = Number(KingPossibleMoves[k])
+          if((KingPos > 64)){
+            KingPossibleMoves.splice(k, 1)
+          }
+          
+          console.log(everyPiece[n]);
+          if((KingPos < 64)&&(checkpossibleMovesNoTaking(everyPiece[n], nodeArray[KingPos]))){
+            KingPossibleMoves.splice(k, 1)
+          }
+          
+          if(KingPossibleMoves[k]== everyPiece[n].getAttribute("place")){
+            KingPossibleMoves.splice(k,1)
+          }
+        }
+      }
+      
+    
+    if((KingPossibleMoves.length == 0)&&(possibleMoves.length == 0)){
+      alert("this is check mate");
+      return true
+    }else{
+      console.log("the king can move");
+      console.log(KingPossibleMoves);
+      return possibleMoves
+    }
+  }
 
 
 //___________________________________________Main Figures_________________________
@@ -383,8 +530,8 @@ let figures = {
     let elementRect = piece.getBoundingClientRect()
     let divRect = board.getBoundingClientRect()
 
-    if(elementRect.left >= (divRect.left -= 20) && elementRect.right <= (divRect.right+=20) &&
-      elementRect.top >= divRect.top && elementRect.bottom <= (divRect.bottom += 20)){
+    if(elementRect.left >= (divRect.left -= 40) && elementRect.right <= (divRect.right+=40) &&
+      elementRect.top >= (divRect.top-=40) && elementRect.bottom <= (divRect.bottom += 40)){
         return true
       }else{
         return false
@@ -1070,6 +1217,7 @@ function dragElement(elmnt) {
   function closeDragElement(e) {
   let pieceplacement = elmnt.getAttribute("place")
   if(figures.valid(elmnt) && figures[elmnt.getAttribute("pieceinfo")].valid(nodeArray[placement(elmnt)] , elmnt)){
+    
       let next = placement(elmnt)
       let howmany = Number(elmnt.getAttribute("move"))
       //console.log(howmany);
@@ -1078,11 +1226,12 @@ function dragElement(elmnt) {
       elmnt.setAttribute("place", next)
       elmnt.setAttribute("move", howmany+1) 
       HowManyMoves++
-      upgrading()
-      whosMove()
-      if(whiteCheckingChecks() != false){
+      
+      if(whiteCheckingChecks()!= false){
         whiteCheckMate()
       }
+      upgrading()
+      whosMove()
   
     }else{
       
